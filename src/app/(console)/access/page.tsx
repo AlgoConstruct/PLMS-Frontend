@@ -26,8 +26,8 @@ export default async function AccessPage({ searchParams }: PageProps<"/access">)
   const customNode = typeof params.nodeId === "string" ? params.nodeId.trim() : "";
 
   const [me, scopeOptions, catalog] = await Promise.all([getMe(), getScopeOptions(), apiOrNull<Permission[]>("/api/v1/iam/permissions")]);
-  const codes = catalog?.map((p) => p.code)
-    ?? [...new Set([...me.permissions, "student.read", "student.update", "organization.update", "iam.role.create"])].sort();
+  const codes = catalog?.filter((p) => p.status === "ACTIVE").map((p) => p.code)
+    ?? [...new Set([...me.permissions, "organization.read", "organization.update", "iam.user.read", "iam.role.create"])].sort();
   const nodeOptions = scopeOptions.filter((o) => o.value !== "GLOBAL");
 
   let query = "";

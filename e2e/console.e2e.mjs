@@ -3,7 +3,10 @@ import { chromium } from "playwright";
 
 // End-to-end walkthrough against a running backend (dev profile) and frontend.
 // Run: npm run e2e   (first time: npx playwright install chromium)
+// Env: E2E_BASE_URL (console, default :3000), E2E_IAM_URL (IAM, default :8080)
 const B = process.env.E2E_BASE_URL ?? "http://localhost:3000";
+// IAM itself, for checking a revealed client secret against /oauth2/token.
+const IAM = process.env.E2E_IAM_URL ?? B.replace(":3000", ":8080");
 const ts = Date.now().toString().slice(-6);
 const shots = process.env.E2E_SCREENSHOTS ?? "e2e/screenshots";
 mkdirSync(shots, { recursive: true });
@@ -74,7 +77,7 @@ await page.getByLabel("Name").fill("E2E Faculty Reviewer");
 await page.getByRole("button", { name: "Create role" }).click();
 await page.waitForURL(/\/roles\/[0-9a-f-]{36}/);
 await toast(page, "created");
-for (const code of ["student.read", "organization.read", "project.approve"]) {
+for (const code of ["organization.read", "iam.user.read", "iam.assignment.read"]) {
   await page.locator("li").filter({ hasText: code }).getByRole("checkbox").click();
 }
 await page.getByRole("button", { name: "Save permissions" }).click();
@@ -90,6 +93,33 @@ await page.getByRole("tab", { name: /Members/ }).click();
 await page.getByRole("cell", { name: /Teacher/ }).first().waitFor();
 await page.screenshot({ path: `${shots}/06-role-members.png` });
 log("role created, permissions saved, teacher assigned at Engineering");
+
+await page.goto(`${B}/service-clients`);
+await page.getByRole("button", { name: "New service client" }).click();
+await page.getByLabel("Client id").fill(`e2e-svc-${ts}`);
+await page.getByLabel("Name", { exact: true }).fill("E2E service");
+await page.getByLabel("Permission prefixes").fill(`e2e${ts}`);
+await page.getByRole("button", { name: "Create", exact: true }).click();
+const secret = await page.getByRole("textbox", { name: "Client secret" }).inputValue();
+if (secret.length < 40) throw new Error("client secret was not revealed");
+await page.screenshot({ path: `${shots}/09-client-secret.png` });
+await page.getByRole("button", { name: "Done" }).click();
+await page.getByRole("cell", { name: new RegExp(`e2e-svc-${ts}`) }).waitFor();
+log("service client created, secret revealed once");
+
+const tokenResponse = await fetch(`${IAM}/oauth2/token`, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded",
+             Authorization: "Basic " + Buffer.from(`e2e-svc-${ts}:${secret}`).toString("base64") },
+  body: "grant_type=client_credentials",
+});
+if (tokenResponse.status !== 200) throw new Error(`client credentials failed: ${tokenResponse.status}`);
+log("revealed secret works against /oauth2/token");
+
+await page.goto(`${B}/audit`);
+await page.getByRole("cell", { name: /iam\.client\.create/ }).first().waitFor();
+await page.screenshot({ path: `${shots}/10-audit.png` });
+log("audit log shows the client creation");
 
 // ---------- teacher now sees the new tree ----------
 page = await session("teacher");
@@ -111,6 +141,10 @@ await page.getByRole("dialog").getByRole("button", { name: "Assign" }).click();
 await page.getByRole("dialog").getByText(/Denied/).waitFor();
 await page.screenshot({ path: `${shots}/07-escalation-denied.png` });
 log("escalation attempt shows inline 403");
+
+await page.goto(`${B}/service-clients`);
+await page.getByText(/403 · Not permitted/).waitFor();
+log("collegeadmin cannot manage service clients");
 
 await page.goto(`${B}/access?permission=organization.update&target=CUSTOM&nodeId=`);
 await page.screenshot({ path: `${shots}/08-access.png` });

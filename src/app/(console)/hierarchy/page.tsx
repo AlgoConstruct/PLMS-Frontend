@@ -20,16 +20,16 @@ import { EditOrganizationDialog, NewNodeDialog, NewOrganizationDialog } from "./
 
 export const metadata: Metadata = { title: "Hierarchy" };
 
+/** IAM-owned permissions always exist; service permissions are checked with the Access check page. */
 const PROBES = [
   "organization.read",
   "organization.create",
   "organization.update",
   "organization.delete",
+  "iam.user.read",
+  "iam.assignment.read",
   "iam.assignment.create",
-  "student.read",
-  "student.update",
-  "project.approve",
-  "project.create",
+  "iam.assignment.revoke",
 ];
 
 export default async function HierarchyPage({ searchParams }: PageProps<"/hierarchy">) {
