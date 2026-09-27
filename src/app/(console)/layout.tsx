@@ -31,6 +31,13 @@ export default async function ConsoleLayout({ children }: LayoutProps<"/">) {
         ...(has("iam.permission.read") ? [{ href: "/permissions", label: "Permissions", icon: "permissions" as const }] : []),
       ],
     },
+    {
+      label: "Platform",
+      items: [
+        ...(has("iam.client.manage") ? [{ href: "/service-clients", label: "Service clients", icon: "clients" as const }] : []),
+        ...(has("iam.audit.read") ? [{ href: "/audit", label: "Audit log", icon: "audit" as const }] : []),
+      ],
+    },
   ];
 
   return (

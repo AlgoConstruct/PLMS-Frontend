@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Cable,
   ChevronsUpDown,
   KeyRound,
   LayoutDashboard,
   ListTree,
   LogOut,
   Network,
+  ScrollText,
   ShieldCheck,
   UserCog,
   Users,
@@ -43,6 +45,8 @@ const icons = {
   roles: UserCog,
   permissions: KeyRound,
   access: ShieldCheck,
+  clients: Cable,
+  audit: ScrollText,
 };
 
 export interface NavItem {

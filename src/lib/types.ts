@@ -108,3 +108,33 @@ export interface Problem {
   detail?: string;
   errors?: Record<string, string>;
 }
+export interface ServiceClient {
+  id: string;
+  clientId: string;
+  name: string;
+  prefixes: string[];
+  status: "ACTIVE" | "DISABLED";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreatedServiceClient {
+  client: ServiceClient;
+  clientSecret: string;
+}
+
+export interface AuditEvent {
+  id: string;
+  occurredAt: string;
+  kind: "DECISION" | "ADMIN";
+  actorUserId: string | null;
+  actorClientId: string | null;
+  action: string;
+  targetType: string | null;
+  targetId: string | null;
+  nodeId: string | null;
+  result: "ALLOWED" | "DENIED" | "FAILED";
+  reason: string | null;
+  clientIp: string | null;
+  requestId: string | null;
+}
