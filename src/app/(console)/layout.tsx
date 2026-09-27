@@ -50,6 +50,7 @@ export default async function ConsoleLayout({ children }: LayoutProps<"/">) {
           <span className="text-sm text-muted-foreground">
             Signed in as <span className="font-medium text-foreground">{me.user.username}</span>
           </span>
+          <a href="/app" className="ml-auto text-sm font-medium text-primary hover:underline">Open Pathway IQ app</a>
         </header>
         <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">{children}</div>
       </SidebarInset>
