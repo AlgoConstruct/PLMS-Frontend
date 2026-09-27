@@ -22,6 +22,8 @@ The backend must run with the `dev` profile for the demo accounts; the login pag
 | Users | `/users`, `/users/[id]` | Scoped directory with search and paging, create users, edit profile / reset password, enable / disable, assign and revoke roles |
 | Roles | `/roles`, `/roles/[id]` | Create custom roles, edit / deactivate / delete, choose permissions and per-permission scope mode, see and manage members |
 | Permissions | `/permissions` | Backend permission catalog |
+| Service clients | `/service-clients` | Create clients (secret shown once), rotate secrets, edit prefixes, enable / disable |
+| Audit log | `/audit` | Filter decisions and admin actions by actor, node, result and time; scoped to your reach |
 | Access check | `/access` | Ask the engine whether you may do X at node Y and why |
 
 Buttons are hidden or disabled when your permissions clearly do not allow an action, but that is only a
