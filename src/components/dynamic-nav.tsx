@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Folder, Home, Settings, Users, type LucideIcon } from "lucide-react";
+import {
+  BookOpen, CalendarDays, ClipboardList, Folder, GraduationCap, Home, Layers, Megaphone, Settings, Users, type LucideIcon,
+} from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -12,7 +14,10 @@ import {
 } from "@/components/ui/sidebar";
 import { resolveRoute } from "@/lib/route-registry";
 
-const ICONS: Record<string, LucideIcon> = { home: Home, users: Users, folder: Folder, settings: Settings };
+const ICONS: Record<string, LucideIcon> = {
+  home: Home, users: Users, folder: Folder, settings: Settings, book: BookOpen, school: GraduationCap,
+  calendar: CalendarDays, clipboard: ClipboardList, megaphone: Megaphone, layers: Layers,
+};
 
 interface Item { key: string; label: string; icon: string; route: string }
 interface Group { key: string; label: string; icon: string; items: Item[] }

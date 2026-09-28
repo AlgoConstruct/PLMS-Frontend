@@ -2,9 +2,17 @@
  * Menu keys the frontend has pages for. The backend decides WHAT is visible; this registry decides WHERE a
  * key leads. Unknown keys are skipped so a backend menu can never produce a broken link.
  */
-const GLOBAL_PAGES = new Set(["home", "workspaces"]);
+const GLOBAL_PAGES = new Set(["home", "workspaces", "courses", "classrooms"]);
 const CONTEXT_PAGES: Record<string, Set<string>> = {
   workspace: new Set(["workspace-overview", "workspace-members"]),
+  classroom: new Set([
+    "classroom-overview",
+    "classroom-content",
+    "classroom-schedule",
+    "classroom-assignments",
+    "classroom-announcements",
+    "classroom-members",
+  ]),
 };
 
 export function resolveRoute(key: string, route: string, context?: { type: string; id: string }): string | null {

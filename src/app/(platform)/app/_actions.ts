@@ -16,16 +16,19 @@ export async function createWorkspace(_: ActionState | undefined, form: FormData
   return success(`${result.data.name} created`, `/app/c/workspace/${result.data.id}`);
 }
 
-export async function addMember(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+export async function bulkAddMembers(_: ActionState | undefined, form: FormData): Promise<ActionState> {
   const type = field(form, "type");
   const id = field(form, "id");
-  const result = await platformApi(`/api/v1/contexts/${type}/${id}/members`, {
+  const userIds = form.getAll("userIds").filter((v): v is string => typeof v === "string");
+  if (userIds.length === 0) return failure("Select at least one person");
+  const result = await platformApi<{ added: unknown[]; skipped: string[] }>(`/api/v1/contexts/${type}/${id}/members/bulk`, {
     method: "POST",
-    body: JSON.stringify({ userId: field(form, "userId"), role: field(form, "role") }),
+    body: JSON.stringify({ userIds, role: field(form, "role") }),
   });
   if (!result.ok) return failure(problemMessage(result));
   revalidatePath(`/app/c/${type}/${id}/members`);
-  return success("Member added");
+  const { added, skipped } = result.data;
+  return success(skipped.length > 0 ? `${added.length} added, ${skipped.length} skipped` : `${added.length} added`);
 }
 
 export async function removeMember(_: ActionState | undefined, form: FormData): Promise<ActionState> {

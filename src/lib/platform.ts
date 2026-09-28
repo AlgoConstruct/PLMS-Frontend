@@ -1,8 +1,10 @@
 import "server-only";
 
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { ApiResult } from "./api";
+import { problemMessage, type ApiResult } from "./api";
+import { failure, success, type ActionState } from "./action-state";
 import { ACCESS_COOKIE } from "./session";
 import type { Problem } from "./types";
 
@@ -37,4 +39,19 @@ export interface Navigation { context: string; groups: NavGroup[]; capabilities:
 export async function getNavigation(context: string): Promise<Navigation> {
   const result = await platformApi<Navigation>(`/api/v1/navigation?context=${encodeURIComponent(context)}`);
   return result.ok ? result.data : { context, groups: [], capabilities: [] };
+}
+
+/** Calls the platform and converts the outcome into an ActionState; revalidates the given paths on success. */
+export async function platformMutate<T>(
+  path: string,
+  method: "POST" | "PATCH" | "PUT" | "DELETE",
+  body: unknown,
+  onSuccess: (data: T) => string | { message: string; redirectTo?: string },
+  revalidate: string[] = [],
+): Promise<ActionState> {
+  const result = await platformApi<T>(path, { method, body: body === undefined ? undefined : JSON.stringify(body) });
+  if (!result.ok) return failure(problemMessage(result));
+  revalidate.forEach((p) => revalidatePath(p, "layout"));
+  const outcome = onSuccess(result.data);
+  return typeof outcome === "string" ? success(outcome) : success(outcome.message, outcome.redirectTo);
 }

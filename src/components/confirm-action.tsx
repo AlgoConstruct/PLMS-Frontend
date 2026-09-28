@@ -20,7 +20,7 @@ import type { ActionState, ServerAction } from "@/lib/action-state";
 export function ConfirmAction({ trigger, title, description, action, fields, confirmLabel = "Confirm", destructive = true }: {
   trigger: ReactNode;
   title: string;
-  description: ReactNode;
+  description?: ReactNode;
   action: ServerAction;
   fields: Record<string, string>;
   confirmLabel?: string;
@@ -48,7 +48,7 @@ export function ConfirmAction({ trigger, title, description, action, fields, con
           {Object.entries(fields).map(([name, value]) => <input key={name} type="hidden" name={name} value={value} />)}
           <AlertDialogHeader>
             <AlertDialogTitle>{title}</AlertDialogTitle>
-            <AlertDialogDescription>{description}</AlertDialogDescription>
+            {description && <AlertDialogDescription>{description}</AlertDialogDescription>}
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-4">
             <AlertDialogCancel type="button">Cancel</AlertDialogCancel>

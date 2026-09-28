@@ -9,37 +9,47 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getVisibleUsers } from "@/lib/data";
 import { platformApi } from "@/lib/platform";
-import { addMember, removeMember } from "../../../../_actions";
-
-interface Member { id: string; userId: string; role: string; roleName: string; joinedAt: string }
+import type { ContextRole, Member } from "@/lib/platform-types";
+import { bulkAddMembers, removeMember } from "../../../../_actions";
 
 export default async function MembersPage({ params }: PageProps<"/app/c/[type]/[id]/members">) {
   const { type, id } = await params;
-  const [members, users] = await Promise.all([
+  const [members, users, roles] = await Promise.all([
     platformApi<Member[]>(`/api/v1/contexts/${type}/${id}/members`),
     getVisibleUsers(),
+    platformApi<ContextRole[]>(`/api/v1/contexts/${type}/${id}/assignable-roles`),
   ]);
   if (!members.ok) return <Forbidden what="the member list" />;
-  const name = new Map(users.map((u) => [u.id, u.displayName]));
-  const manage = `${type}.member.manage`;
+  const names = new Map(users.map((u) => [u.id, u.displayName]));
+  const memberIds = new Set(members.data.map((m) => m.userId));
+  const candidates = users.filter((u) => !memberIds.has(u.id));
+  const assignable = roles.ok ? roles.data : [];
+  // Least-privileged assignable role first: no role codes are hardcoded here.
+  const leastPrivileged = [...assignable].sort((a, b) => a.capabilities.length - b.capabilities.length)[0];
   return (
     <>
-      <PageHeader title="Members" actions={
-        <Can code={manage}>
-          <FormDialog trigger={<Button><UserPlus /> Add member</Button>} title="Add member" action={addMember} submitLabel="Add"
-                      description="You can only give roles whose capabilities you hold here.">
-            <input type="hidden" name="type" value={type} />
-            <input type="hidden" name="id" value={id} />
-            <FormField label="User" htmlFor="m-user">
-              <SelectField id="m-user" name="userId" required options={users.map((u) => ({ value: u.id, label: u.displayName, hint: u.username }))} />
-            </FormField>
-            <FormField label="Role" htmlFor="m-role">
-              <SelectField id="m-role" name="role" required defaultValue="MEMBER"
-                           options={[{ value: "OWNER", label: "Owner" }, { value: "MEMBER", label: "Member" }, { value: "VIEWER", label: "Viewer" }]} />
-            </FormField>
-          </FormDialog>
-        </Can>
-      } />
+      <PageHeader title="Members" actions={assignable.length > 0 && (
+        <FormDialog trigger={<Button><UserPlus /> Add members</Button>} title="Add members" action={bulkAddMembers} submitLabel="Add" wide
+                    description="You can only give roles whose capabilities you hold here. People who already have the role are skipped.">
+          <input type="hidden" name="type" value={type} />
+          <input type="hidden" name="id" value={id} />
+          <FormField label="Role" htmlFor="m-role">
+            <SelectField id="m-role" name="role" required defaultValue={leastPrivileged?.code}
+                         options={assignable.map((r) => ({ value: r.code, label: r.name }))} />
+          </FormField>
+          <fieldset className="grid max-h-72 gap-1 overflow-y-auto rounded-md border p-2">
+            <legend className="px-1 text-sm font-medium">People</legend>
+            {candidates.length === 0 && <p className="px-2 text-sm text-muted-foreground">No one else visible to you.</p>}
+            {candidates.map((u) => (
+              <label key={u.id} className="flex items-center gap-2 rounded px-2 py-1 text-sm hover:bg-muted">
+                <input type="checkbox" name="userIds" value={u.id} className="size-4" />
+                {u.displayName}
+                <span className="text-xs text-muted-foreground">{u.username}</span>
+              </label>
+            ))}
+          </fieldset>
+        </FormDialog>
+      )} />
       <Card>
         <CardContent>
           <Table>
@@ -47,11 +57,11 @@ export default async function MembersPage({ params }: PageProps<"/app/c/[type]/[
             <TableBody>
               {members.data.map((m) => (
                 <TableRow key={m.id}>
-                  <TableCell>{name.get(m.userId) ?? m.userId.slice(0, 8)}</TableCell>
+                  <TableCell>{names.get(m.userId) ?? m.userId.slice(0, 8)}</TableCell>
                   <TableCell>{m.roleName}</TableCell>
                   <TableCell className="text-muted-foreground">{new Date(m.joinedAt).toLocaleDateString()}</TableCell>
                   <TableCell className="text-right">
-                    <Can code={manage}>
+                    <Can code={`${type}.member.manage`}>
                       <ConfirmAction trigger={<Button variant="ghost" size="sm" className="text-destructive"><XCircle /> Remove</Button>}
                                      title="Remove member?" description="They lose access on their next request."
                                      action={removeMember} fields={{ type, id, membershipId: m.id }} confirmLabel="Remove" />
