@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "e2e": "node e2e/console.e2e.mjs",
-    "e2e:platform": "node e2e/platform.e2e.mjs"
+    "e2e:platform": "node e2e/platform.e2e.mjs",
+    "e2e:shell": "node e2e/shell.e2e.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

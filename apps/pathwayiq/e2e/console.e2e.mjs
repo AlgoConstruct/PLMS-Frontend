@@ -19,7 +19,7 @@ async function session(user) {
   page.on("pageerror", (e) => console.log("PAGE ERROR", e.message));
   await page.goto(`${B}/login`);
   await page.getByRole("button", { name: new RegExp(`^${user}`) }).click();
-  await page.waitForURL(`${B}/`);
+  await page.waitForURL(`${B}/app`);
   await page.getByRole("heading", { name: /Welcome/ }).waitFor();
   log(`${user} signed in`);
   return page;
@@ -36,13 +36,13 @@ async function toast(page, text) {
 // ---------- superadmin builds a new hierarchy, role and assignment ----------
 let page = await session("superadmin");
 await page.screenshot({ path: `${shots}/01-dashboard.png` });
-await page.goto(`${B}/hierarchy`);
+await page.goto(`${B}/app/admin/hierarchy`);
 await page.screenshot({ path: `${shots}/02-hierarchy.png` });
 await page.getByRole("button", { name: "New organization" }).click();
 await page.getByLabel("Code").fill(`E2E_${ts}`);
 await page.getByLabel("Name").fill(`E2E University ${ts}`);
 await page.getByRole("button", { name: "Create", exact: true }).click();
-await page.waitForURL(/\/hierarchy\/types\?org=/);
+await page.waitForURL(/\/app\/admin\/hierarchy\/types\?org=/);
 await toast(page, "created");
 const orgId = new URL(page.url()).searchParams.get("org");
 
@@ -56,7 +56,7 @@ for (const [name, code, parent] of [["University", "UNIVERSITY", null], ["Facult
 }
 await page.screenshot({ path: `${shots}/03-node-types.png` });
 
-await page.goto(`${B}/hierarchy?org=${orgId}`);
+await page.goto(`${B}/app/admin/hierarchy?org=${orgId}`);
 await page.getByRole("button", { name: "Add root node" }).click();
 await page.getByLabel("Name").fill("E2E University");
 await page.getByLabel("Code").fill("UNI");
@@ -70,12 +70,12 @@ await page.getByRole("button", { name: "Create node" }).click();
 await toast(page, "Engineering created");
 await page.screenshot({ path: `${shots}/04-new-tree.png` });
 
-await page.goto(`${B}/roles`);
+await page.goto(`${B}/app/admin/roles`);
 await page.getByRole("button", { name: "New role" }).click();
 await page.getByLabel("Code").fill(`E2E_ROLE_${ts}`);
 await page.getByLabel("Name").fill("E2E Faculty Reviewer");
 await page.getByRole("button", { name: "Create role" }).click();
-await page.waitForURL(/\/roles\/[0-9a-f-]{36}/);
+await page.waitForURL(/\/app\/admin\/roles\/[0-9a-f-]{36}/);
 await toast(page, "created");
 for (const code of ["organization.read", "iam.user.read", "iam.assignment.read"]) {
   await page.locator("li").filter({ hasText: code }).getByRole("checkbox").click();
@@ -94,7 +94,7 @@ await page.getByRole("cell", { name: /Teacher/ }).first().waitFor();
 await page.screenshot({ path: `${shots}/06-role-members.png` });
 log("role created, permissions saved, teacher assigned at Engineering");
 
-await page.goto(`${B}/service-clients`);
+await page.goto(`${B}/app/admin/service-clients`);
 await page.getByRole("button", { name: "New service client" }).click();
 await page.getByLabel("Client id").fill(`e2e-svc-${ts}`);
 await page.getByLabel("Name", { exact: true }).fill("E2E service");
@@ -116,23 +116,23 @@ const tokenResponse = await fetch(`${IAM}/oauth2/token`, {
 if (tokenResponse.status !== 200) throw new Error(`client credentials failed: ${tokenResponse.status}`);
 log("revealed secret works against /oauth2/token");
 
-await page.goto(`${B}/audit`);
+await page.goto(`${B}/app/admin/audit`);
 await page.getByRole("cell", { name: /iam\.client\.create/ }).first().waitFor();
 await page.screenshot({ path: `${shots}/10-audit.png` });
 log("audit log shows the client creation");
 
 // ---------- teacher now sees the new tree ----------
 page = await session("teacher");
-await page.goto(`${B}/hierarchy?org=${orgId}`);
+await page.goto(`${B}/app/admin/hierarchy?org=${orgId}`);
 await page.getByRole("link", { name: /Engineering/ }).first().waitFor();
 log("teacher sees Engineering in the new organization");
 
 // ---------- collegeadmin: scoped UI + denials ----------
 page = await session("collegeadmin");
-await page.goto(`${B}/roles`);
+await page.goto(`${B}/app/admin/roles`);
 if (await page.getByRole("button", { name: "New role" }).count()) throw new Error("college admin should not get New role");
 log("collegeadmin has no New role button (needs GLOBAL)");
-await page.goto(`${B}/users`);
+await page.goto(`${B}/app/admin/users`);
 await page.getByRole("link", { name: /Teacher/ }).first().click();
 await page.getByRole("button", { name: "Assign role" }).click();
 await pick(page, "Role", /Super Administrator/);
@@ -142,11 +142,11 @@ await page.getByRole("dialog").getByText(/Denied/).waitFor();
 await page.screenshot({ path: `${shots}/07-escalation-denied.png` });
 log("escalation attempt shows inline 403");
 
-await page.goto(`${B}/service-clients`);
+await page.goto(`${B}/app/admin/service-clients`);
 await page.getByText(/403 · Not permitted/).waitFor();
 log("collegeadmin cannot manage service clients");
 
-await page.goto(`${B}/access?permission=organization.update&target=CUSTOM&nodeId=`);
+await page.goto(`${B}/app/admin/access?permission=organization.update&target=CUSTOM&nodeId=`);
 await page.screenshot({ path: `${shots}/08-access.png` });
 await browser.close();
 console.log("E2E PASSED");

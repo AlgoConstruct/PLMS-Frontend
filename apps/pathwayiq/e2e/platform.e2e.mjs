@@ -12,7 +12,7 @@ async function session(user) {
   page.on("pageerror", (e) => console.log("PAGE ERROR", e.message));
   await page.goto(`${B}/login`);
   await page.getByRole("button", { name: new RegExp(`^${user}`) }).click();
-  await page.waitForURL(`${B}/`);
+  await page.waitForURL(`${B}/app`);
   return page;
 }
 async function pick(page, label, option) {
