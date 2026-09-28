@@ -32,15 +32,6 @@ export async function platformApi<T>(path: string, init: RequestInit = {}): Prom
   return { ok: true, status: response.status, data };
 }
 
-export interface NavItem { key: string; label: string; icon: string; route: string }
-export interface NavGroup { key: string; label: string; icon: string; items: NavItem[] }
-export interface Navigation { context: string; groups: NavGroup[]; capabilities: string[] }
-
-export async function getNavigation(context: string): Promise<Navigation> {
-  const result = await platformApi<Navigation>(`/api/v1/navigation?context=${encodeURIComponent(context)}`);
-  return result.ok ? result.data : { context, groups: [], capabilities: [] };
-}
-
 /** Calls the platform and converts the outcome into an ActionState; revalidates the given paths on success. */
 export async function platformMutate<T>(
   path: string,

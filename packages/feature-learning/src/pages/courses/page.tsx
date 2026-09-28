@@ -9,22 +9,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@pathwayiq/ui/componen
 import { Input } from "@pathwayiq/ui/components/input";
 import { Textarea } from "@pathwayiq/ui/components/textarea";
 import { getScopeOptions } from "@pathwayiq/api/data";
-import { getNavigation, platformApi } from "@pathwayiq/api/platform";
+import { Can } from "@pathwayiq/access/capabilities";
+import { platformApi } from "@pathwayiq/api/platform";
 import type { Course } from "@pathwayiq/api/platform-types";
 import { createCourse } from "../_course-actions";
 
 export default async function CoursesPage() {
-  const [result, scopes, nav] = await Promise.all([
+  const [result, scopes] = await Promise.all([
     platformApi<Course[]>("/api/v1/courses"),
     getScopeOptions(),
-    getNavigation("global"),
   ]);
   const courses = result.ok ? result.data : [];
   const nodes = scopes.filter((o) => o.value !== "GLOBAL");
   return (
     <>
       <PageHeader title="Courses" description="Reusable, versioned content. Classrooms use a published version."
-                  actions={nav.capabilities.includes("course.create") && (
+                  actions={<Can code="course.create">
                     <FormDialog trigger={<Button><Plus /> New course</Button>} title="New course" action={createCourse}
                                 submitLabel="Create" description="Version 1 starts as an editable draft.">
                       <FormField label="Organization unit" htmlFor="c-node">
@@ -35,7 +35,7 @@ export default async function CoursesPage() {
                       <FormField label="Description" htmlFor="c-desc"><Textarea id="c-desc" name="description" /></FormField>
                       <FormField label="Credits" htmlFor="c-credits"><Input id="c-credits" name="credits" type="number" min={0} /></FormField>
                     </FormDialog>
-                  )} />
+                  </Can>} />
       <Card>
         <CardHeader><CardTitle>{courses.length} courses</CardTitle></CardHeader>
         <CardContent className="grid gap-2">

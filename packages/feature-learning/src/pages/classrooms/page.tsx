@@ -8,7 +8,8 @@ import { Button } from "@pathwayiq/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@pathwayiq/ui/components/card";
 import { Input } from "@pathwayiq/ui/components/input";
 import { getScopeOptions } from "@pathwayiq/api/data";
-import { getNavigation, platformApi } from "@pathwayiq/api/platform";
+import { Can } from "@pathwayiq/access/capabilities";
+import { platformApi } from "@pathwayiq/api/platform";
 import type { Classroom, Course } from "@pathwayiq/api/platform-types";
 import { createClassroom } from "../_classroom-actions";
 
@@ -32,12 +33,11 @@ function ClassroomList({ items, empty }: { items: Classroom[]; empty: string }) 
 }
 
 export default async function ClassroomsPage() {
-  const [mine, supervised, courses, scopes, nav] = await Promise.all([
+  const [mine, supervised, courses, scopes] = await Promise.all([
     platformApi<Classroom[]>("/api/v1/classrooms"),
     platformApi<Classroom[]>("/api/v1/classrooms?mine=false"),
     platformApi<Course[]>("/api/v1/courses"),
     getScopeOptions(),
-    getNavigation("global"),
   ]);
   const my = mine.ok ? mine.data : [];
   const myIds = new Set(my.map((c) => c.id));
@@ -47,7 +47,7 @@ export default async function ClassroomsPage() {
   return (
     <>
       <PageHeader title="Classrooms" description="Classrooms you belong to, and those you supervise."
-                  actions={nav.capabilities.includes("classroom.create") && (
+                  actions={<Can code="classroom.create">
                     <FormDialog trigger={<Button><Plus /> New classroom</Button>} title="New classroom" action={createClassroom}
                                 submitLabel="Create" description="You become its teacher. A course uses its latest published version." wide>
                       <FormField label="Organization unit" htmlFor="k-node">
@@ -69,7 +69,7 @@ export default async function ClassroomsPage() {
                         <Input id="k-tz" name="timezone" defaultValue="UTC" />
                       </FormField>
                     </FormDialog>
-                  )} />
+                  </Can>} />
       <Card>
         <CardHeader><CardTitle>My classrooms</CardTitle></CardHeader>
         <CardContent><ClassroomList items={my} empty="You are not in any classroom yet." /></CardContent>
