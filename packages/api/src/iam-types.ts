@@ -1,42 +1,27 @@
-// DTOs returned by the Pathway IQ IAM API (see /v3/api-docs).
+// Types of the IAM API, generated from its OpenAPI document (pnpm api:generate). Do not hand-edit shapes here.
+import type { components } from "./generated/iam";
 
-export type UserStatus = "ACTIVE" | "DISABLED";
-export type RecordStatus = "ACTIVE" | "INACTIVE";
-export type ScopeType = "GLOBAL" | "NODE";
-export type ScopeMode = "CURRENT_NODE" | "DESCENDANTS" | "CURRENT_AND_DESCENDANTS";
+type S = components["schemas"];
 
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  displayName: string;
-  status: UserStatus;
-  createdAt: string;
-  updatedAt: string;
-}
+export type User = S["UserResponse"];
+export type UserStatus = User["status"];
+export type Assignment = S["AssignmentResponse"];
+export type ScopeType = Assignment["scopeType"];
+export type Me = S["MeResponse"];
+export type Role = S["RoleResponse"];
+export type RecordStatus = Role["status"];
+export type RolePermission = S["RolePermissionResponse"];
+export type ScopeMode = RolePermission["scopeMode"];
+export type Permission = S["PermissionResponse"];
+export type Organization = S["OrganizationResponse"];
+export type NodeType = S["NodeTypeResponse"];
+export type OrgNode = S["NodeResponse"];
+export type CheckResult = S["SelfCheckResponse"];
+export type ServiceClient = S["ServiceClientResponse"];
+export type CreatedServiceClient = S["CreatedServiceClient"];
+export type AuditEvent = S["AuditEventResponse"];
 
-export interface Assignment {
-  id: string;
-  userId: string;
-  user: { id: string; username: string; displayName: string };
-  role: { id: string; code: string; name: string };
-  scopeType: ScopeType;
-  node: { id: string; organizationId: string; code: string; name: string } | null;
-  status: "ACTIVE" | "REVOKED";
-  effective: boolean;
-  startsAt: string;
-  expiresAt: string | null;
-  grantedBy: string | null;
-  revokedAt: string | null;
-  createdAt: string;
-}
-
-export interface Me {
-  user: User;
-  assignments: Assignment[];
-  permissions: string[];
-}
-
+/** Paged list wrapper (generic, so not a named schema). */
 export interface Page<T> {
   items: T[];
   page: number;
@@ -45,96 +30,10 @@ export interface Page<T> {
   totalPages: number;
 }
 
-export interface Role {
-  id: string;
-  code: string;
-  name: string;
-  description: string | null;
-  systemRole: boolean;
-  status: RecordStatus;
-}
-
-export interface RolePermission {
-  permissionCode: string;
-  description: string;
-  scopeMode: ScopeMode;
-  permissionActive: boolean;
-}
-
-export interface Permission {
-  code: string;
-  module: string;
-  description: string;
-  status: "ACTIVE" | "DEPRECATED";
-}
-
-export interface Organization {
-  id: string;
-  code: string;
-  name: string;
-  status: RecordStatus;
-}
-
-export interface NodeType {
-  id: string;
-  organizationId: string;
-  code: string;
-  name: string;
-  parentTypeId: string | null;
-  status: RecordStatus;
-}
-
-export interface OrgNode {
-  id: string;
-  organizationId: string;
-  nodeTypeId: string;
-  parentId: string | null;
-  code: string;
-  name: string;
-  depth: number;
-  status: RecordStatus;
-}
-
-export interface CheckResult {
-  permission: string;
-  target: string;
-  allowed: boolean;
-  reason: "GRANTED" | "NO_MATCHING_GRANT" | "UNKNOWN_PERMISSION" | "RESOURCE_UNRESOLVED" | "NOT_AUTHENTICATED";
-}
-
+/** RFC 9457 problem details returned on errors. */
 export interface Problem {
   title?: string;
   status?: number;
   detail?: string;
   errors?: Record<string, string>;
-}
-export interface ServiceClient {
-  id: string;
-  clientId: string;
-  name: string;
-  prefixes: string[];
-  status: "ACTIVE" | "DISABLED";
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreatedServiceClient {
-  client: ServiceClient;
-  clientSecret: string;
-}
-
-export interface AuditEvent {
-  id: string;
-  occurredAt: string;
-  kind: "DECISION" | "ADMIN";
-  actorUserId: string | null;
-  actorClientId: string | null;
-  action: string;
-  targetType: string | null;
-  targetId: string | null;
-  nodeId: string | null;
-  result: "ALLOWED" | "DENIED" | "FAILED";
-  reason: string | null;
-  clientIp: string | null;
-  requestId: string | null;
 }

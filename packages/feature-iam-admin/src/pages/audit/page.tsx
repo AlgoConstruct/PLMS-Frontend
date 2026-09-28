@@ -14,7 +14,7 @@ import type { AuditEvent, Page } from "@pathwayiq/api/iam-types";
 export const metadata: Metadata = { title: "Audit log" };
 
 const PAGE_SIZE = 50;
-const RESULT_VARIANT = { ALLOWED: "secondary", DENIED: "destructive", FAILED: "outline" } as const;
+const RESULT_VARIANT: Record<string, "secondary" | "destructive" | "outline"> = { ALLOWED: "secondary", DENIED: "destructive", FAILED: "outline" };
 
 export default async function AuditPage({ searchParams }: PageProps<"/app/admin/audit">) {
   const params = await searchParams;
