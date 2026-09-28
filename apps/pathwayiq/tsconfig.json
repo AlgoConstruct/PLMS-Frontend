@@ -10,6 +10,24 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@pathwayiq/ui/*": [
+        "../../packages/ui/src/*"
+      ],
+      "@pathwayiq/auth/*": [
+        "../../packages/auth/src/*"
+      ],
+      "@pathwayiq/api/*": [
+        "../../packages/api/src/*"
+      ],
+      "@pathwayiq/access/*": [
+        "../../packages/access/src/*"
+      ],
+      "@pathwayiq/feature-iam-admin/*": [
+        "../../packages/feature-iam-admin/src/*"
+      ],
+      "@pathwayiq/feature-learning/*": [
+        "../../packages/feature-learning/src/*"
       ]
     }
   },
@@ -19,7 +37,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "../../packages/*/src/**/*.ts",
+    "../../packages/*/src/**/*.tsx"
   ],
   "exclude": [
     "node_modules"

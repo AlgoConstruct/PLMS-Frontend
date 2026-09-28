@@ -15,7 +15,7 @@ const DEMO_USERS = [
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
-  const next = typeof params.next === "string" ? params.next : "/";
+  const next = typeof params.next === "string" ? params.next : "/app";
   const expired = params.expired === "1";
   const showDemo = process.env.NODE_ENV !== "production" || process.env.SHOW_DEMO_USERS === "true";
 

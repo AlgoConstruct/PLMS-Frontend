@@ -1,0 +1,22 @@
+{
+  "name": "@pathwayiq/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate.mjs"
+  },
+  "dependencies": {
+    "@pathwayiq/auth": "workspace:*",
+    "@pathwayiq/ui": "workspace:*",
+    "server-only": "^0.0.1"
+  },
+  "peerDependencies": {
+    "next": "16.3.6",
+    "react": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}

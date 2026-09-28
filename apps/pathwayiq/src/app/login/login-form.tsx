@@ -2,12 +2,12 @@
 
 import { useActionState, useRef } from "react";
 import { LogIn, ShieldAlert } from "lucide-react";
-import { login } from "@/app/actions";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { login } from "@pathwayiq/auth/actions";
+import { Alert, AlertDescription } from "@pathwayiq/ui/components/alert";
+import { Badge } from "@pathwayiq/ui/components/badge";
+import { Button } from "@pathwayiq/ui/components/button";
+import { Field, FieldGroup, FieldLabel } from "@pathwayiq/ui/components/field";
+import { Input } from "@pathwayiq/ui/components/input";
 
 interface DemoUser {
   username: string;

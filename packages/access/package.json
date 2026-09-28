@@ -1,0 +1,24 @@
+{
+  "name": "@pathwayiq/access",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pathwayiq/auth": "workspace:*",
+    "@pathwayiq/ui": "workspace:*",
+    "lucide-react": "^1.48.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "vitest": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  },
+  "peerDependencies": {
+    "next": "16.3.6",
+    "react": "19.2.8"
+  }
+}

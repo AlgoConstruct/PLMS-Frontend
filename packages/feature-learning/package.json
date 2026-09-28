@@ -1,0 +1,22 @@
+{
+  "name": "@pathwayiq/feature-learning",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@pathwayiq/access": "workspace:*",
+    "@pathwayiq/api": "workspace:*",
+    "@pathwayiq/auth": "workspace:*",
+    "@pathwayiq/ui": "workspace:*",
+    "lucide-react": "^1.48.0",
+    "server-only": "^0.0.1"
+  },
+  "peerDependencies": {
+    "next": "16.3.6",
+    "react": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}

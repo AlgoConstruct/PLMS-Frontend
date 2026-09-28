@@ -1,0 +1,13 @@
+{
+  "name": "@pathwayiq/auth",
+  "version": "0.0.0",
+  "private": true,
+  "peerDependencies": {
+    "next": "16.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}

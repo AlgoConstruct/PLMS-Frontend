@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: [
+    "@pathwayiq/ui",
+    "@pathwayiq/auth",
+    "@pathwayiq/api",
+    "@pathwayiq/access",
+    "@pathwayiq/feature-iam-admin",
+    "@pathwayiq/feature-learning",
+  ],
 };
 
 export default nextConfig;
