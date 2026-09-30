@@ -569,7 +569,7 @@ export interface paths {
         };
         /**
          * Administration menu and cards for the caller
-         * @description Authenticated. `context=global` returns the Administration group filtered by the caller's effective permissions; any other context returns empty lists.
+         * @description Authenticated. `context=global` returns the Administration group filtered by the caller's effective permissions (iam-access for holders of any iam.* or organization.* code; the group is omitted when empty); any other context returns empty lists.
          */
         get: operations["navigation"];
         put?: never;

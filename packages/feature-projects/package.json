@@ -1,0 +1,30 @@
+{
+  "name": "@pathwayiq/feature-projects",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@pathwayiq/access": "workspace:*",
+    "@pathwayiq/api": "workspace:*",
+    "@pathwayiq/auth": "workspace:*",
+    "@pathwayiq/ui": "workspace:*",
+    "lucide-react": "^1.48.0",
+    "server-only": "^0.0.1",
+    "sonner": "^2.0.8"
+  },
+  "peerDependencies": {
+    "next": "16.3.6",
+    "react": "19.2.8"
+  },
+  "devDependencies": {
+    "vitest": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}
