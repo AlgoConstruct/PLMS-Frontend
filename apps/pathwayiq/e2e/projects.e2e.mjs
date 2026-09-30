@@ -120,7 +120,7 @@ log("overview shows the progress");
 // ---------- completing makes it read-only ----------
 await teacher.goto(projectUrl);
 await teacher.getByRole("button", { name: "Complete", exact: true }).click();
-await teacher.getByRole("alertdialog").getByRole("button", { name: "Complete" }).click();
+await submit(teacher, "Complete");      // the Complete dialog (optional final score)
 await teacher.getByText(/completed and read-only/).waitFor();
 await student.goto(`${projectUrl}/board`);
 await student.getByText(/read-only/).waitFor();

@@ -11,7 +11,8 @@
     "e2e:platform": "node e2e/platform.e2e.mjs",
     "e2e:shell": "node e2e/shell.e2e.mjs",
     "e2e:projects": "node e2e/projects.e2e.mjs",
-    "e2e:collab": "node e2e/collab.e2e.mjs"
+    "e2e:collab": "node e2e/collab.e2e.mjs",
+    "e2e:depth": "node e2e/depth.e2e.mjs"
   },
   "dependencies": {
     "@pathwayiq/access": "workspace:*",

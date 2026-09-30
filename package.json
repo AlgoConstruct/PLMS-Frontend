@@ -13,7 +13,8 @@
     "e2e:platform": "pnpm --filter @pathwayiq/app e2e:platform",
     "e2e:shell": "pnpm --filter @pathwayiq/app e2e:shell",
     "e2e:projects": "pnpm --filter @pathwayiq/app e2e:projects",
-    "e2e:collab": "pnpm --filter @pathwayiq/app e2e:collab"
+    "e2e:collab": "pnpm --filter @pathwayiq/app e2e:collab",
+    "e2e:depth": "pnpm --filter @pathwayiq/app e2e:depth"
   },
   "devDependencies": {
     "eslint": "^9",
