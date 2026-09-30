@@ -24,12 +24,10 @@
 .brandMark { width: 37px; height: 37px; border-radius: 11px; display: grid; place-items: center; background: var(--ink); color: var(--lime); }
 .brandIq { font-weight: 430; }
 .brandDot { color: #6b8c38; }
-.nav, .headerActions { display: flex; align-items: center; gap: 34px; }
-.nav a { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 550; color: #45514a; }
-.nav a:hover, .footer a:hover { color: #527627; }
+.headerActions { display: flex; align-items: center; gap: 34px; }
+.footer a:hover { color: #527627; }
 .signIn { display: flex; align-items: center; gap: 22px; border: 1px solid #cbd3c7; padding: 10px 17px; border-radius: 6px; font-size: 13px; font-weight: 600; }
 .signIn:hover { background: #eff2e9; }
-.menuToggle { display: none; padding: 8px; background: transparent; border: 0; }
 .eyebrow { display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 1.8px; font-weight: 700; line-height: 1.6; margin: 0 0 24px; }
 .primaryButton, .limeButton { display: inline-flex; align-items: center; justify-content: center; gap: 20px; padding: 16px 20px; border-radius: 6px; font-size: 12px; font-weight: 600; background: var(--ink); color: white; transition: transform .18s, background .18s; }
 .textLink { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; }
@@ -144,8 +142,6 @@
 @media (max-width: 800px) {
   .headerInner { width: calc(100% - 40px); min-height: 76px; }
   .brand { font-size: 23px; }
-  .nav { gap: 17px; }
-  .nav a { font-size: 11px; }
   .signIn { gap: 10px; padding: 9px 12px; }
   .purposeStrip .container { flex-direction: column; gap: 14px; }
   .purposeStrip .container > div { width: 100%; justify-content: space-between; gap: 12px; }
@@ -180,10 +176,6 @@
   .brand { font-size: 22px; }
   .brandMark { width: 32px; height: 32px; border-radius: 9px; }
   .headerActions { gap: 8px; }
-  .menuToggle { display: grid; place-items: center; }
-  .nav { display: none; position: absolute; top: 71px; left: 0; right: 0; padding: 20px; background: var(--paper); border-bottom: 1px solid #d9e2d0; box-shadow: 0 10px 18px #172a2910; }
-  .navOpen { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
-  .nav a { padding: 13px 6px; font-size: 14px; }
   .eyebrow { font-size: 8px; letter-spacing: 1.5px; margin-bottom: 20px; }
   .textLink { font-size: 11px; gap: 6px; }
   .purposeStrip { padding-block: 21px; }
@@ -238,4 +230,9 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .landing *, .landing *::before, .landing *::after { transition: none !important; animation: none !important; }
+}
+
+@media (max-width: 900px) {
+  .headerInner { gap: 14px; }
+  .headerActions { margin-left: auto; }
 }

@@ -1,0 +1,38 @@
+.section { background: #f3f5ec; color: #172a29; border-block: 1px solid #e0e6d6; padding: 76px 0 48px; }
+.inner { width: min(1100px, calc(100% - 96px)); margin-inline: auto; }
+.heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 50px; margin-bottom: 35px; }
+.eyebrow { display: flex; align-items: center; gap: 9px; color: #61774b; font-size: 9px; font-weight: 600; letter-spacing: 1.6px; margin: 0 0 19px; }
+.heading h2 { font-size: 40px; font-weight: 530; line-height: 1.2; letter-spacing: -1.6px; margin: 0; }
+.heading h2 span { color: #6e8751; }
+.intro { max-width: 300px; margin: 0 0 5px; font-size: 12px; line-height: 1.85; color: #65725d; }
+.card { height: 100%; border: 1px solid #dce4cf; border-radius: 15px; background: #fffef9; overflow: hidden; }
+.photo { position: relative; height: 215px; background: #d9e3d0; }
+.photo::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, #10251f99); }
+.photo img { object-fit: cover; }
+.caption { position: absolute; z-index: 1; bottom: 16px; left: 20px; display: flex; align-items: center; gap: 6px; color: #fff; font-size: 10px; }
+.number { position: absolute; top: 14px; right: 14px; width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid #ffffff70; border-radius: 50%; background: #18342670; color: #fff; font-size: 9px; }
+.copy { padding: 24px 23px 19px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 17px; }
+.tags span { font-size: 8px; color: #5f7549; border-radius: 20px; background: #eff4e5; border: 1px solid #dfe7d0; padding: 4px 8px; }
+.copy h3 { margin: 0; font-size: 21px; font-weight: 550; letter-spacing: -.7px; line-height: 1.25; min-height: 53px; }
+.copy > p { min-height: 66px; margin: 12px 0 20px; color: #64705d; font-size: 12px; line-height: 1.85; }
+.prompt { display: flex; justify-content: space-between; align-items: center; gap: 8px; border-top: 1px solid #e6ebdc; padding-top: 17px; color: #68804e; }
+.prompt span { font-size: 7px; font-weight: 550; letter-spacing: 1.1px; }
+.note { margin: 22px 0 0; color: #69755e; font-size: 9px; line-height: 1.8; }
+@media (max-width: 1050px) {
+  .inner { width: calc(100% - 64px); }
+  .heading { gap: 28px; }
+  .intro { max-width: 260px; }
+}
+@media (max-width: 700px) {
+  .section { padding: 52px 0 34px; }
+  .inner { width: calc(100% - 40px); }
+  .heading { display: block; margin-bottom: 25px; }
+  .heading h2 { font-size: 32px; letter-spacing: -1.2px; }
+  .eyebrow { font-size: 8px; letter-spacing: 1.2px; }
+  .intro { max-width: 380px; margin: 18px 0 0; }
+  .photo { height: 200px; }
+  .copy { padding: 21px 20px 18px; }
+  .copy h3 { font-size: 20px; }
+  .note { font-size: 9px; }
+}

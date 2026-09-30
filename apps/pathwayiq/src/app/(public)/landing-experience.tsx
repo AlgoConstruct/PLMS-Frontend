@@ -5,10 +5,13 @@ import Link from "next/link";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, BookOpen, Check, ChevronDown,
   Code2, Compass, FlaskConical, GraduationCap, Layers3,
-  Lightbulb, Menu, Network, Plus, Rocket, ShieldCheck, Sparkles,
-  Sprout, Users, X,
+  Lightbulb, Network, Plus, Rocket, ShieldCheck, Sparkles,
+  Sprout, Users,
 } from "lucide-react";
+import { DropdownNavigation, type NavigationItem } from "@/components/ui/dropdown-navigation";
+import FeaturesBlock from "@/components/ui/features-2";
 import HeroSection from "@/components/ui/hero-section-9";
+import StudentPossibilities from "@/components/ui/student-possibilities";
 import styles from "./landing.module.css";
 
 const AUDIENCES = [
@@ -51,33 +54,55 @@ function Brand() {
 }
 
 export function LandingExperience({ signedIn }: { signedIn: boolean }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [audience, setAudience] = useState(0);
   const person = AUDIENCES[audience];
   const entryHref = signedIn ? "/app" : "/login";
   const entryLabel = signedIn ? "Open your workspace" : "Explore your workspace";
 
+  const navigation: NavigationItem[] = [
+    {
+      id: "platform", label: "The platform", subMenus: [
+        { title: "Learning, connected", items: [
+          { label: "Classrooms & courses", description: "Your everyday learning, in one place.", icon: BookOpen, href: "#platform" },
+          { label: "Community & workspaces", description: "A shared space for curious minds.", icon: Users, href: "#community" },
+        ] },
+        { title: "A world of possibility", items: [
+          { label: "AI-assisted learning", description: "Explore our vision for thoughtful guidance.", icon: Sparkles, href: "#ai-learning" },
+          { label: "Student innovation", description: "From a first question to a meaningful idea.", icon: Lightbulb, href: "#innovation" },
+        ] },
+      ],
+    },
+    {
+      id: "audiences", label: "Who it’s for", subMenus: [
+        { title: "Find your place", items: AUDIENCES.map((item, index) => ({
+          label: item.label,
+          description: ["Learn, explore, and create your own path.", "Inspire discovery in every classroom.", "Connect your people and academic teams."][index],
+          icon: item.icon, href: "#community", onSelect: () => setAudience(index),
+        })) },
+      ],
+    },
+    {
+      id: "resources", label: "Resources", subMenus: [
+        { title: "Get to know Pathway IQ", items: [
+          { label: "About the platform", description: "Discover the Academic Operating System.", icon: Network, href: "#platform" },
+          { label: "Platform features", description: "Collaboration, learning, and institutional flexibility.", icon: Layers3, href: "#features" },
+          { label: "Questions & answers", description: "Features, institutions, and getting access.", icon: BookOpen, href: "#faq" },
+          { label: signedIn ? "Your workspace" : "Access your workspace", description: "Continue with your institution account.", icon: GraduationCap, href: entryHref },
+        ] },
+      ],
+    },
+    { id: "vision", label: "Our vision", href: "#innovation" },
+  ];
+
   return (
     <div className={styles.landing} id="top">
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
-      <header className={styles.header} onKeyDown={(event) => {
-        if (event.key === "Escape" && menuOpen) {
-          setMenuOpen(false);
-          document.getElementById("landing-menu-toggle")?.focus();
-        }
-      }}>
+      <header className={styles.header}>
         <div className={styles.headerInner}>
           <Brand />
-          <nav id="landing-navigation" aria-label="Main navigation" className={`${styles.nav} ${menuOpen ? styles.navOpen : ""}`}>
-            <a href="#platform" onClick={() => setMenuOpen(false)}>The platform</a>
-            <a href="#community" onClick={() => setMenuOpen(false)}>Who it’s for</a>
-            <a href="#innovation" onClick={() => setMenuOpen(false)}>Our vision <ArrowUpRight size={13} aria-hidden="true" /></a>
-          </nav>
+          <DropdownNavigation navItems={navigation} />
           <div className={styles.headerActions}>
             <Link href={entryHref} className={styles.signIn}>{signedIn ? "Open app" : "Sign in"}<ArrowUpRight size={16} aria-hidden="true" /></Link>
-            <button id="landing-menu-toggle" className={styles.menuToggle} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen} aria-controls="landing-navigation" onClick={() => setMenuOpen(!menuOpen)}>
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
           </div>
         </div>
       </header>
@@ -110,10 +135,12 @@ export function LandingExperience({ signedIn }: { signedIn: boolean }) {
           <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>THE BIGGER PICTURE</p><h2 id="platform-title">More than a classroom.<br />A place for possibility.</h2></div><p>Bring the everyday essentials together.<br />Make space for extraordinary ideas.</p></div>
           <div className={styles.featureGrid}>
             <article className={`${styles.featureCard} ${styles.learningCard}`}><span className={styles.featureIcon}><BookOpen size={24} aria-hidden="true" /></span><span className={styles.featureNumber}>01 / LEARN</span><h3>Everything you need.<br />Room to go further.</h3><p>Courses, classrooms, assignments, and schedules. A clearer view of your learning, all in one place.</p><div className={styles.stackedLessons} aria-hidden="true"><div><span className={styles.lessonIcon}><FlaskConical size={18} /></span><span>Explore. Question. Discover.<small>Your next chapter starts here</small></span><ArrowUpRight size={17} /></div><div><span className={styles.lessonIcon}><Code2 size={18} /></span><span>From understanding to doing<small>Put your knowledge into practice</small></span><ArrowUpRight size={17} /></div></div></article>
-            <article className={`${styles.featureCard} ${styles.aiCard}`}><span className={styles.featureIcon}><Sparkles size={24} aria-hidden="true" /></span><span className={styles.featureNumber}>02 / EXPLORE <span>OUR VISION</span></span><h3>A thinking partner.<br />For your next “aha.”</h3><p>Our AI vision: guidance that helps you ask better questions, explore ideas, and build your own understanding.</p><div className={styles.ideaGraphic} aria-hidden="true"><span>What if…</span><span><Sparkles size={25} /></span><span>Let’s explore.</span></div></article>
+            <article id="ai-learning" className={`${styles.featureCard} ${styles.aiCard}`}><span className={styles.featureIcon}><Sparkles size={24} aria-hidden="true" /></span><span className={styles.featureNumber}>02 / EXPLORE <span>OUR VISION</span></span><h3>A thinking partner.<br />For your next “aha.”</h3><p>Our AI vision: guidance that helps you ask better questions, explore ideas, and build your own understanding.</p><div className={styles.ideaGraphic} aria-hidden="true"><span>What if…</span><span><Sparkles size={25} /></span><span>Let’s explore.</span></div></article>
             <article className={`${styles.featureCard} ${styles.communityCard}`}><span className={styles.featureIcon}><Users size={24} aria-hidden="true" /></span><span className={styles.featureNumber}>03 / CONNECT</span><h3>Great things happen<br />when minds meet.</h3><p>Shared workspaces and classroom communities connect students, educators, and the people who help them grow.</p><div className={styles.communityGraphic} aria-hidden="true"><span>YOU</span><span><GraduationCap size={22} /></span><span><Lightbulb size={22} /></span><span><BookOpen size={22} /></span><span>Better, together.</span></div></article>
           </div>
         </section>
+
+        <FeaturesBlock onExploreInstitutions={() => setAudience(2)} />
 
         <section id="community" className={styles.audienceSection} aria-labelledby="community-title"><div className={styles.container}>
           <div className={styles.centerHeading}><p className={styles.eyebrow}>DIFFERENT ROLES. SHARED POSSIBILITIES.</p><h2 id="community-title">A place for every curious mind.</h2></div>
@@ -129,7 +156,9 @@ export function LandingExperience({ signedIn }: { signedIn: boolean }) {
           <ol className={styles.steps}><li><span>01</span><div><h3>Follow your curiosity</h3><p>Connect what you’re learning to a problem you care about.</p></div><Lightbulb aria-hidden="true" /></li><li><span>02</span><div><h3>Make something meaningful</h3><p>Bring an idea to life with peers, mentors, and room to experiment.</p></div><Layers3 aria-hidden="true" /></li><li><span>03</span><div><h3>Show the world what you can do</h3><p>Build a portfolio that tells the story behind your skills.</p></div><ArrowUpRight aria-hidden="true" /></li></ol>
         </section>
 
-        <section className={`${styles.container} ${styles.faqSection}`} aria-labelledby="faq-title"><div><p className={styles.eyebrow}>A LITTLE MORE CLARITY</p><h2 id="faq-title">Good questions.<br />A great place to start.</h2></div><div className={styles.faqList}>{FAQS.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} aria-hidden="true" /></summary><p>{answer}</p></details>)}</div></section>
+        <StudentPossibilities />
+
+        <section id="faq" className={`${styles.container} ${styles.faqSection}`} aria-labelledby="faq-title"><div><p className={styles.eyebrow}>A LITTLE MORE CLARITY</p><h2 id="faq-title">Good questions.<br />A great place to start.</h2></div><div className={styles.faqList}>{FAQS.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} aria-hidden="true" /></summary><p>{answer}</p></details>)}</div></section>
 
         <section className={`${styles.container} ${styles.cta}`} aria-labelledby="cta-title"><span className={styles.ctaOrb} aria-hidden="true" /><div><p className={styles.eyebrow}>YOUR NEXT CHAPTER</p><h2 id="cta-title">Stay curious.<br /><span>Go make a difference.</span></h2><p>Your learning journey has a place to call home.</p></div><div className={styles.ctaActions}><Link href={entryHref} className={styles.limeButton}>{entryLabel}<ArrowUpRight size={19} aria-hidden="true" /></Link><span><ShieldCheck size={14} aria-hidden="true" /> Use your institution-provided account</span></div></section>
       </main>
