@@ -7,7 +7,7 @@ const log = (...a) => console.log("✓", ...a);
 
 const anon = await (await browser.newContext()).newPage();
 await anon.goto(`${B}/`);
-await anon.getByRole("heading", { name: /Learning and projects/ }).waitFor();
+await anon.getByRole("heading", { level: 1, name: /Learn with.*purpose/ }).waitFor();
 await anon.getByRole("link", { name: "Sign in" }).first().click();
 await anon.waitForURL(`${B}/login`);
 log("landing page is public and links to sign in");
