@@ -42,5 +42,7 @@ export async function loadWorkspaceData(id: string, filters: TaskFilters) {
     statuses: statuses.ok ? statuses.data : [],
     tasks: tasks.ok ? tasks.data : [],
     members: people,
+    // members first, then every other visible user (supervisors comment through inheritance)
+    people: [...people, ...users.filter((u) => !people.some((p) => p.id === u.id)).map((u) => ({ id: u.id, name: u.displayName }))],
   };
 }

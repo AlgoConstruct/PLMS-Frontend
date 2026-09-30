@@ -17,7 +17,7 @@ export default async function BoardPage({ params, searchParams }: PageProps<"/ap
       <PageHeader title="Board" description={`${data.project.key} · ${data.tasks.length} tasks${editable ? "" : " · read-only"}`} />
       <TaskFilters members={data.members} />
       <Board key={signature} projectId={id} statuses={data.statuses} tasks={data.tasks} members={data.members} editable={editable} />
-      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} editable={editable} />
+      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} people={data.people} editable={editable} />
     </>
   );
 }

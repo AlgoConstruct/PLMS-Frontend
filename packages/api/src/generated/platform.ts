@@ -148,6 +148,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/files/{id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["complete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/courses": {
         parameters: {
             query?: never;
@@ -308,7 +324,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/classrooms": {
+    "/api/v1/contexts/{type}/{id}/files": {
         parameters: {
             query?: never;
             header?: never;
@@ -318,6 +334,38 @@ export interface paths {
         get: operations["list_4"];
         put?: never;
         post: operations["create_5"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contexts/{type}/{id}/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["thread"];
+        put?: never;
+        post: operations["create_6"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/classrooms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list_5"];
+        put?: never;
+        post: operations["create_7"];
         delete?: never;
         options?: never;
         head?: never;
@@ -548,6 +596,22 @@ export interface paths {
         patch: operations["updateLesson"];
         trace?: never;
     };
+    "/api/v1/comments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["delete_1"];
+        options?: never;
+        head?: never;
+        patch: operations["edit"];
+        trace?: never;
+    };
     "/api/v1/classrooms/{id}": {
         parameters: {
             query?: never;
@@ -644,6 +708,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/files/{id}/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["download"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/course-versions/{id}": {
         parameters: {
             query?: never;
@@ -684,6 +764,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["assignableRoles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contexts/{type}/{id}/activity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["page"];
         put?: never;
         post?: never;
         delete?: never;
@@ -751,6 +847,22 @@ export interface paths {
         put?: never;
         post?: never;
         delete: operations["deleteProjectTemplate"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["delete_2"];
         options?: never;
         head?: never;
         patch?: never;
@@ -952,6 +1064,10 @@ export interface components {
             completedAt: string;
             assigneeIds: string[];
             checklist: components["schemas"]["ChecklistItemResponse"][];
+            /** Format: int64 */
+            commentCount: number;
+            /** Format: int64 */
+            fileCount: number;
         };
         ChecklistItemRequest: {
             text: string;
@@ -1012,6 +1128,22 @@ export interface components {
         };
         StatusRequest: {
             status: string;
+        };
+        FileResponse: {
+            /** Format: uuid */
+            id: string;
+            targetType: string;
+            /** Format: uuid */
+            targetId: string;
+            /** Format: uuid */
+            uploaderId: string;
+            name: string;
+            contentType: string;
+            /** Format: int64 */
+            size: number;
+            deletable: boolean;
+            /** Format: date-time */
+            createdAt: string;
         };
         CreateCourseRequest: {
             /** Format: uuid */
@@ -1171,6 +1303,50 @@ export interface components {
         BulkAddResponse: {
             added: components["schemas"]["MemberResponse"][];
             skipped: string[];
+        };
+        CreateUploadRequest: {
+            name: string;
+            contentType: string;
+            /** Format: int64 */
+            size: number;
+            targetType?: string;
+            /** Format: uuid */
+            targetId?: string;
+        };
+        UploadResponse: {
+            file: components["schemas"]["FileResponse"];
+            uploadUrl: string;
+            headers: {
+                [key: string]: string;
+            };
+        };
+        CreateCommentRequest: {
+            targetType: string;
+            /** Format: uuid */
+            targetId: string;
+            /** Format: uuid */
+            parentId?: string;
+            body: string;
+        };
+        CommentResponse: {
+            /** Format: uuid */
+            id: string;
+            targetType: string;
+            /** Format: uuid */
+            targetId: string;
+            /** Format: uuid */
+            parentId: string;
+            /** Format: uuid */
+            authorId: string;
+            body: string;
+            deleted: boolean;
+            editable: boolean;
+            deletable: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            editedAt: string;
+            replies: components["schemas"]["CommentResponse"][];
         };
         CreateClassroomRequest: {
             /** Format: uuid */
@@ -1350,6 +1526,9 @@ export interface components {
             credits: number;
             status: string;
         };
+        EditCommentRequest: {
+            body: string;
+        };
         UpdateClassroomRequest: {
             title: string;
             section: string;
@@ -1394,6 +1573,9 @@ export interface components {
             capabilities: string[];
             cards: components["schemas"]["CardResponse"][];
         };
+        DownloadResponse: {
+            url: string;
+        };
         CourseDetailResponse: {
             course: components["schemas"]["CourseResponse"];
             versions: components["schemas"]["VersionSummary"][];
@@ -1424,6 +1606,25 @@ export interface components {
             name: string;
             system: boolean;
             capabilities: string[];
+        };
+        ActivityPage: {
+            items: components["schemas"]["ActivityResponse"][];
+            next: string;
+        };
+        ActivityResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            actorId: string;
+            verb: string;
+            targetType: string;
+            /** Format: uuid */
+            targetId: string;
+            data: {
+                [key: string]: unknown;
+            };
+            /** Format: date-time */
+            occurredAt: string;
         };
         ClassroomDetailResponse: {
             classroom: components["schemas"]["ClassroomResponse"];
@@ -1817,6 +2018,28 @@ export interface operations {
             };
         };
     };
+    complete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["FileResponse"];
+                };
+            };
+        };
+    };
     list_3: {
         parameters: {
             query?: {
@@ -2122,6 +2345,112 @@ export interface operations {
     list_4: {
         parameters: {
             query?: {
+                targetType?: string;
+                targetId?: string;
+            };
+            header?: never;
+            path: {
+                type: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["FileResponse"][];
+                };
+            };
+        };
+    };
+    create_5: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                type: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUploadRequest"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["UploadResponse"];
+                };
+            };
+        };
+    };
+    thread: {
+        parameters: {
+            query: {
+                targetType: string;
+                targetId: string;
+            };
+            header?: never;
+            path: {
+                type: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CommentResponse"][];
+                };
+            };
+        };
+    };
+    create_6: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                type: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateCommentRequest"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CommentResponse"];
+                };
+            };
+        };
+    };
+    list_5: {
+        parameters: {
+            query?: {
                 mine?: boolean;
                 termId?: string;
                 status?: string;
@@ -2143,7 +2472,7 @@ export interface operations {
             };
         };
     };
-    create_5: {
+    create_7: {
         parameters: {
             query?: never;
             header?: never;
@@ -2745,6 +3074,52 @@ export interface operations {
             };
         };
     };
+    delete_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    edit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EditCommentRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CommentResponse"];
+                };
+            };
+        };
+    };
     get_3: {
         parameters: {
             query?: never;
@@ -2977,6 +3352,28 @@ export interface operations {
             };
         };
     };
+    download: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DownloadResponse"];
+                };
+            };
+        };
+    };
     version: {
         parameters: {
             query?: never;
@@ -3041,6 +3438,34 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["RoleResponse"][];
+                };
+            };
+        };
+    };
+    page: {
+        parameters: {
+            query?: {
+                targetType?: string;
+                targetId?: string;
+                before?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                type: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ActivityPage"];
                 };
             };
         };
@@ -3115,6 +3540,26 @@ export interface operations {
         };
     };
     deleteProjectTemplate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    delete_2: {
         parameters: {
             query?: never;
             header?: never;

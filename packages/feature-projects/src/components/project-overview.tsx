@@ -4,6 +4,8 @@ import { Badge } from "@pathwayiq/ui/components/badge";
 import { Button } from "@pathwayiq/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@pathwayiq/ui/components/card";
 import { Can } from "@pathwayiq/access/capabilities";
+import { ActivityFeed } from "@pathwayiq/collaboration/activity-feed";
+import { loadPeople } from "@pathwayiq/collaboration/people";
 import { platformApi } from "@pathwayiq/api/platform";
 import type { Objective, ProjectProgress, ProjectTask } from "@pathwayiq/api/platform-types";
 import { loadProject } from "../lib/load";
@@ -20,11 +22,12 @@ const TRANSITIONS: Record<string, { status: string; label: string; destructive?:
 };
 
 export async function ProjectOverview({ id }: { id: string }) {
-  const [project, progress, objectives, mine] = await Promise.all([
+  const [project, progress, objectives, mine, people] = await Promise.all([
     loadProject(id),
     platformApi<ProjectProgress>(`/api/v1/projects/${id}/progress`),
     platformApi<Objective[]>(`/api/v1/projects/${id}/objectives`),
     platformApi<ProjectTask[]>(`/api/v1/projects/${id}/tasks?assignee=me`),
+    loadPeople("platform", "project", id),
   ]);
   if (!project) return <Forbidden what="this project" />;
   const writable = isWritable(project.status);
@@ -71,6 +74,10 @@ export async function ProjectOverview({ id }: { id: string }) {
           </CardContent>
         </Card>
       </div>
+      <Card>
+        <CardHeader><CardTitle>Recent activity</CardTitle></CardHeader>
+        <CardContent><ActivityFeed ctx={{ backend: "platform", type: "project", id }} people={people} limit={15} /></CardContent>
+      </Card>
     </>
   );
 }

@@ -70,7 +70,7 @@ export async function TaskListPage({ id, searchParams, mine }: { id: string; sea
           )}
         </CardContent>
       </Card>
-      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members}
+      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} people={data.people}
                       editable={isWritable(data.project.status)} />
     </>
   );
