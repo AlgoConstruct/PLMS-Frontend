@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     "@pathwayiq/feature-iam-admin",
     "@pathwayiq/feature-learning",
     "@pathwayiq/feature-projects",
+    "@pathwayiq/collaboration",
   ],
 };
 

@@ -19,6 +19,7 @@
     "@pathwayiq/feature-iam-admin": "workspace:*",
     "@pathwayiq/feature-learning": "workspace:*",
     "@pathwayiq/feature-projects": "workspace:*",
+    "@pathwayiq/collaboration": "workspace:*",
     "@pathwayiq/ui": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",

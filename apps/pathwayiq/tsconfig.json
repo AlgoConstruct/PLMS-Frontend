@@ -31,6 +31,9 @@
       ],
       "@pathwayiq/feature-projects/*": [
         "../../packages/feature-projects/src/*"
+      ],
+      "@pathwayiq/collaboration/*": [
+        "../../packages/collaboration/src/*"
       ]
     }
   },

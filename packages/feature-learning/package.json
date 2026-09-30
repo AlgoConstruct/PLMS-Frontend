@@ -6,6 +6,7 @@
     "@pathwayiq/access": "workspace:*",
     "@pathwayiq/api": "workspace:*",
     "@pathwayiq/auth": "workspace:*",
+    "@pathwayiq/collaboration": "workspace:*",
     "@pathwayiq/ui": "workspace:*",
     "lucide-react": "^1.48.0",
     "server-only": "^0.0.1"
