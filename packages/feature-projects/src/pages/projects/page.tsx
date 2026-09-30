@@ -1,9 +1,7 @@
-import Link from "next/link";
 import { Plus } from "lucide-react";
 import { FormDialog } from "@pathwayiq/ui/blocks/form-dialog";
-import { EmptyState, FormField, PageHeader } from "@pathwayiq/ui/blocks/page";
+import { FormField, PageHeader } from "@pathwayiq/ui/blocks/page";
 import { SelectField } from "@pathwayiq/ui/blocks/select-field";
-import { Badge } from "@pathwayiq/ui/components/badge";
 import { Button } from "@pathwayiq/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@pathwayiq/ui/components/card";
 import { Input } from "@pathwayiq/ui/components/input";
@@ -11,28 +9,8 @@ import { Textarea } from "@pathwayiq/ui/components/textarea";
 import { getScopeOptions } from "@pathwayiq/api/data";
 import { platformApi } from "@pathwayiq/api/platform";
 import type { Project } from "@pathwayiq/api/platform-types";
-import { ProgressBar } from "../../components/progress-bar";
+import { ProjectList } from "../../components/project-list";
 import { createProject } from "../_actions";
-
-export function ProjectList({ items, empty }: { items: Project[]; empty: string }) {
-  if (items.length === 0) return <EmptyState>{empty}</EmptyState>;
-  return (
-    <div className="grid gap-2">
-      {items.map((p) => (
-        <Link key={p.id} href={`/app/c/project/${p.id}`} className="grid gap-2 rounded-lg border p-3 hover:bg-muted sm:grid-cols-[1fr_200px]">
-          <span>
-            <span className="font-medium">{p.title}</span>
-            <span className="block text-xs text-muted-foreground">{[p.key, p.dueOn && `due ${p.dueOn}`].filter(Boolean).join(" · ")}</span>
-          </span>
-          <span className="grid gap-1">
-            <Badge variant="outline" className="w-fit">{p.status.toLowerCase()}</Badge>
-            <ProgressBar done={p.tasksDone} total={p.tasksTotal} />
-          </span>
-        </Link>
-      ))}
-    </div>
-  );
-}
 
 export default async function ProjectsPage() {
   const [mine, scoped, scopes] = await Promise.all([

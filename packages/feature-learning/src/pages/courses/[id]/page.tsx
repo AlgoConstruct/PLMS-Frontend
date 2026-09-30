@@ -14,7 +14,7 @@ import { Textarea } from "@pathwayiq/ui/components/textarea";
 import { platformApi } from "@pathwayiq/api/platform";
 import type { CourseDetail, CourseVersion } from "@pathwayiq/api/platform-types";
 import {
-  addLesson, addMaterial, addTemplate, addUnit, deleteLesson, deleteMaterial, deleteTemplate, deleteUnit, newDraft, publishVersion,
+  addLesson, addMaterial, addProjectTemplate, addTemplate, addUnit, deleteProjectTemplate, deleteLesson, deleteMaterial, deleteTemplate, deleteUnit, newDraft, publishVersion,
 } from "../../_course-actions";
 
 const hidden = (fields: Record<string, string>) =>
@@ -155,6 +155,51 @@ export default async function CoursePage({ params, searchParams }: PageProps<"/a
               {canEdit && (
                 <ConfirmAction trigger={<Button size="sm" variant="ghost" className="text-destructive" aria-label="Delete template"><Trash2 /></Button>}
                                title={`Delete ${t.title}?`} action={deleteTemplate} fields={{ ...ids, templateId: t.id }} confirmLabel="Delete" />
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between gap-2">
+            <CardTitle>Project templates</CardTitle>
+            {canEdit && (
+              <FormDialog trigger={<Button size="sm" variant="outline"><Plus /> Project template</Button>} title="New project template"
+                          action={addProjectTemplate} submitLabel="Add" wide
+                          description="Classrooms start projects from these, one per student or one per team.">
+                {hidden(ids)}
+                <FormField label="Title" htmlFor="pt-title"><Input id="pt-title" name="title" required maxLength={200} /></FormField>
+                <FormField label="Brief" htmlFor="pt-brief"><Textarea id="pt-brief" name="brief" /></FormField>
+                <FormField label="Objectives" htmlFor="pt-obj" hint="One per line"><Textarea id="pt-obj" name="objectives" rows={4} /></FormField>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField label="Who works on it" htmlFor="pt-mode">
+                    <SelectField id="pt-mode" name="teamMode" defaultValue="INDIVIDUAL"
+                                 options={[{ value: "INDIVIDUAL", label: "Each student" }, { value: "TEAM", label: "Teams" }]} />
+                  </FormField>
+                  <FormField label="Duration (days)" htmlFor="pt-days"><Input id="pt-days" name="durationDays" type="number" min={1} /></FormField>
+                  <FormField label="Min team size" htmlFor="pt-min" hint="Teams only"><Input id="pt-min" name="minTeamSize" type="number" min={1} /></FormField>
+                  <FormField label="Max team size" htmlFor="pt-max" hint="Teams only"><Input id="pt-max" name="maxTeamSize" type="number" min={1} /></FormField>
+                </div>
+              </FormDialog>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="grid gap-2">
+          {version.data.projectTemplates.length === 0 ? <EmptyState>No project templates.</EmptyState> : version.data.projectTemplates.map((t) => (
+            <div key={t.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
+              <span>
+                <span className="font-medium">{t.title}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {t.teamMode === "TEAM" ? `teams of ${t.minTeamSize ?? 1}–${t.maxTeamSize ?? "any"}` : "each student"}
+                  {t.durationDays != null ? ` · ${t.durationDays} days` : ""}
+                  {t.objectives.length > 0 ? ` · ${t.objectives.length} objectives` : ""}
+                </span>
+              </span>
+              {canEdit && (
+                <ConfirmAction trigger={<Button size="sm" variant="ghost" className="text-destructive" aria-label="Delete project template"><Trash2 /></Button>}
+                               title={`Delete ${t.title}?`} action={deleteProjectTemplate} fields={{ ...ids, projectTemplateId: t.id }} confirmLabel="Delete" />
               )}
             </div>
           ))}

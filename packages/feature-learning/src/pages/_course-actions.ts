@@ -78,3 +78,21 @@ export async function deleteTemplate(_: ActionState | undefined, form: FormData)
   return platformMutate(`/api/v1/assignment-templates/${field(form, "templateId")}`, "DELETE", undefined,
     () => "Assignment template removed", coursePage(form));
 }
+
+export async function addProjectTemplate(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const team = field(form, "teamMode") === "TEAM";
+  return platformMutate(`/api/v1/course-versions/${field(form, "versionId")}/project-templates`, "POST", {
+    title: field(form, "title"),
+    brief: field(form, "brief"),
+    objectives: (field(form, "objectives") ?? "").split("\n").map((t) => t.trim()).filter(Boolean),
+    teamMode: team ? "TEAM" : "INDIVIDUAL",
+    minTeamSize: team ? num(form, "minTeamSize") : null,
+    maxTeamSize: team ? num(form, "maxTeamSize") : null,
+    durationDays: num(form, "durationDays"),
+  }, () => "Project template added", coursePage(form));
+}
+
+export async function deleteProjectTemplate(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  return platformMutate(`/api/v1/project-templates/${field(form, "projectTemplateId")}`, "DELETE", undefined,
+    () => "Project template removed", coursePage(form));
+}
