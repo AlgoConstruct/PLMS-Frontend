@@ -15,9 +15,11 @@ export default async function BoardPage({ params, searchParams }: PageProps<"/ap
   return (
     <>
       <PageHeader title="Board" description={`${data.project.key} · ${data.tasks.length} tasks${editable ? "" : " · read-only"}`} />
-      <TaskFilters members={data.members} />
-      <Board key={signature} projectId={id} statuses={data.statuses} tasks={data.tasks} members={data.members} editable={editable} />
-      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} people={data.people} editable={editable} />
+      <TaskFilters members={data.members} milestones={data.milestones} />
+      <Board key={signature} projectId={id} statuses={data.statuses} tasks={data.tasks} members={data.members} editable={editable}
+             milestoneNames={Object.fromEntries(data.milestones.map((m) => [m.id, m.title]))} />
+      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} people={data.people}
+                      milestones={data.milestones} editable={editable} />
     </>
   );
 }

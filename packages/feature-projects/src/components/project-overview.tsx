@@ -11,7 +11,9 @@ import type { Objective, ProjectProgress, ProjectTask } from "@pathwayiq/api/pla
 import { loadProject } from "../lib/load";
 import { isWritable } from "../lib/status";
 import { changeProjectStatus, toggleObjective } from "../pages/_actions";
+import { CompleteDialog } from "./complete-dialog";
 import { ProgressBar } from "./progress-bar";
+import { ShowcaseCard } from "./showcase-card";
 import { ObjectiveToggle } from "./objective-toggle";
 
 const TRANSITIONS: Record<string, { status: string; label: string; destructive?: boolean }[]> = {
@@ -39,13 +41,14 @@ export async function ProjectOverview({ id }: { id: string }) {
         description={project.summary ?? undefined}
         actions={<Can code="project.complete">
           <div className="flex gap-2">
-            {TRANSITIONS[project.status]?.map((t) => (
+            {TRANSITIONS[project.status]?.map((t) => t.status === "COMPLETED"
+              ? <CompleteDialog key={t.status} projectId={id} title={project.title} />
+              : (
               <ConfirmAction key={t.status} trigger={<Button variant={t.destructive ? "outline" : "default"}>{t.label}</Button>}
                              title={`${t.label} ${project.title}?`} action={changeProjectStatus}
-                             description={t.status === "COMPLETED" ? "A completed project is read-only until it is reopened."
-                               : t.status === "ARCHIVED" ? "Archived projects stay read-only for good." : undefined}
+                             description={t.status === "ARCHIVED" ? "Archived projects stay read-only for good." : undefined}
                              fields={{ projectId: id, status: t.status }} confirmLabel={t.label} destructive={!!t.destructive} />
-            ))}
+              ))}
           </div>
         </Can>} />
       <div className="grid gap-4 md:grid-cols-3">
@@ -53,6 +56,14 @@ export async function ProjectOverview({ id }: { id: string }) {
           <CardHeader><CardTitle>Progress</CardTitle></CardHeader>
           <CardContent className="grid gap-4">
             <ProgressBar done={progress.ok ? progress.data.tasksDone : 0} total={progress.ok ? progress.data.tasksTotal : 0} label="Tasks" />
+            {progress.ok && progress.data.deliverablesTotal > 0 && (
+              <p className="text-sm" data-deliverables-progress>
+                Deliverables: {progress.data.deliverablesAccepted} of {progress.data.deliverablesTotal} accepted
+              </p>
+            )}
+            {progress.ok && progress.data.finalScore != null && (
+              <p className="text-sm font-medium" data-final-score>Final score: {progress.data.finalScore} / 100</p>
+            )}
             <div className="grid gap-2">
               <span className="text-sm font-medium">Objectives</span>
               {!objectives.ok || objectives.data.length === 0
@@ -74,6 +85,7 @@ export async function ProjectOverview({ id }: { id: string }) {
           </CardContent>
         </Card>
       </div>
+      {project.status === "COMPLETED" && <ShowcaseCard projectId={id} />}
       <Card>
         <CardHeader><CardTitle>Recent activity</CardTitle></CardHeader>
         <CardContent><ActivityFeed ctx={{ backend: "platform", type: "project", id }} people={people} limit={15} /></CardContent>

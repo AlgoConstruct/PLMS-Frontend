@@ -22,9 +22,9 @@ import { PRIORITIES, priorityLabel } from "../lib/status";
 import { runAction } from "../lib/run-action";
 import { addChecklistItem, deleteChecklistItem, deleteTask, toggleChecklistItem, updateTask } from "../pages/_actions";
 
-export function TaskDialog({ projectId, task, statuses, members, people, editable, onClose }: {
-  projectId: string; task: ProjectTask; statuses: WorkflowStatus[]; members: Person[]; people: Person[]; editable: boolean;
-  onClose: () => void;
+export function TaskDialog({ projectId, task, statuses, members, people, milestones, editable, onClose }: {
+  projectId: string; task: ProjectTask; statuses: WorkflowStatus[]; members: Person[]; people: Person[];
+  milestones: { id: string; title: string }[]; editable: boolean; onClose: () => void;
 }) {
   const ctx = useMemo(() => ({ backend: "platform", type: "project", id: projectId }), [projectId]);
   const target = useMemo(() => ({ type: "task", id: task.id }), [task.id]);
@@ -75,6 +75,10 @@ export function TaskDialog({ projectId, task, statuses, members, people, editabl
                   </FormField>
                   <FormField label="Priority" htmlFor="td-priority">
                     <SelectField id="td-priority" name="priority" defaultValue={task.priority} options={PRIORITIES.map((p) => ({ value: p, label: priorityLabel(p) }))} />
+                  </FormField>
+                  <FormField label="Milestone" htmlFor="td-milestone">
+                    <SelectField id="td-milestone" name="milestoneId" defaultValue={task.milestoneId ?? "none"}
+                                 options={[{ value: "none", label: "No milestone" }, ...milestones.map((m) => ({ value: m.id, label: m.title }))]} />
                   </FormField>
                   <FormField label="Due on" htmlFor="td-due"><Input id="td-due" name="dueOn" type="date" defaultValue={task.dueOn ?? ""} /></FormField>
                   <FormField label="Estimate (points)" htmlFor="td-est"><Input id="td-est" name="estimatePoints" type="number" min={0} defaultValue={task.estimatePoints ?? ""} /></FormField>

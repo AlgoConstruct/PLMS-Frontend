@@ -18,8 +18,9 @@ import type { Person } from "../lib/types";
 import { createTask, moveTask } from "../pages/_actions";
 import { TaskCard } from "./task-card";
 
-function Column({ status, tasks, members, draggable, projectId, canCreate }: {
+function Column({ status, tasks, members, draggable, projectId, canCreate, milestoneNames }: {
   status: WorkflowStatus; tasks: ProjectTask[]; members: Person[]; draggable: boolean; projectId: string; canCreate: boolean;
+  milestoneNames: Record<string, string>;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: COLUMN_PREFIX + status.id });
   return (
@@ -38,7 +39,8 @@ function Column({ status, tasks, members, draggable, projectId, canCreate }: {
       </header>
       <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
         <div className="flex min-h-16 flex-col gap-2">
-          {tasks.map((t) => <TaskCard key={t.id} task={t} members={members} draggable={draggable} />)}
+          {tasks.map((t) => <TaskCard key={t.id} task={t} members={members} draggable={draggable}
+                                       milestoneName={t.milestoneId ? milestoneNames[t.milestoneId] : undefined} />)}
         </div>
       </SortableContext>
     </section>
@@ -46,8 +48,9 @@ function Column({ status, tasks, members, draggable, projectId, canCreate }: {
 }
 
 /** Moves show at once; if the server refuses, the card goes back and the reason appears as a toast. */
-export function Board({ projectId, statuses, tasks, members, editable }: {
+export function Board({ projectId, statuses, tasks, members, editable, milestoneNames = {} }: {
   projectId: string; statuses: WorkflowStatus[]; tasks: ProjectTask[]; members: Person[]; editable: boolean;
+  milestoneNames?: Record<string, string>;
 }) {
   const [cols, setCols] = useState(() => columns(statuses.map((s) => s.id), tasks));
   const draggable = useCan("project.task.update") && editable;
@@ -74,7 +77,7 @@ export function Board({ projectId, statuses, tasks, members, editable }: {
     <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={onDragEnd}>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {statuses.map((s) => (
-          <Column key={s.id} status={s} tasks={cols[s.id] ?? []} members={members} draggable={draggable}
+          <Column key={s.id} status={s} tasks={cols[s.id] ?? []} members={members} draggable={draggable} milestoneNames={milestoneNames}
                   projectId={projectId} canCreate={canCreate} />
         ))}
       </div>

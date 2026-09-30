@@ -256,6 +256,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/authz/users/display-names": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Display names of users (unknown ids are omitted)
+         * @description Service token. For services that show names without a signed-in user, e.g. public pages.
+         */
+        post: operations["displayNames"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/authz/check": {
         parameters: {
             query?: never;
@@ -1017,6 +1037,9 @@ export interface components {
             /** @enum {string} */
             status: "ACTIVE" | "INACTIVE";
         };
+        DisplayNamesRequest: {
+            ids: string[];
+        };
         CheckRequest: {
             /** Format: uuid */
             userId: string;
@@ -1616,6 +1639,32 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["NodeTypeResponse"];
+                };
+            };
+        };
+    };
+    displayNames: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DisplayNamesRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
                 };
             };
         };

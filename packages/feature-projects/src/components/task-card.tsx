@@ -21,7 +21,9 @@ export function useTaskHref() {
   };
 }
 
-export function TaskCard({ task, members, draggable }: { task: ProjectTask; members: Person[]; draggable: boolean }) {
+export function TaskCard({ task, members, draggable, milestoneName }: {
+  task: ProjectTask; members: Person[]; draggable: boolean; milestoneName?: string;
+}) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id, disabled: !draggable });
   const href = useTaskHref();
   const done = task.checklist.filter((c) => c.done).length;
@@ -33,6 +35,7 @@ export function TaskCard({ task, members, draggable }: { task: ProjectTask; memb
         <span className="text-xs text-muted-foreground">{task.key}</span>
         <span className="font-medium">{task.title}</span>
         <span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          {milestoneName && <Badge variant="secondary" className="max-w-32 truncate">{milestoneName}</Badge>}
           {task.priority !== "MEDIUM" && <Badge variant={task.priority === "URGENT" ? "destructive" : "outline"}>{priorityLabel(task.priority)}</Badge>}
           {task.dueOn && <span className="flex items-center gap-1"><CalendarDays className="size-3" />{task.dueOn}</span>}
           {task.checklist.length > 0 && <span className="flex items-center gap-1"><ListChecks className="size-3" />{done}/{task.checklist.length}</span>}

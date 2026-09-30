@@ -148,6 +148,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projects/{id}/showcase": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["state"];
+        put?: never;
+        post: operations["publish"];
+        delete: operations["unpublish"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{id}/milestones": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list_3"];
+        put?: never;
+        post: operations["create_4"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/projects/{id}/deliverables": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list_4"];
+        put?: never;
+        post: operations["create_5"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/files/{id}/complete": {
         parameters: {
             query?: never;
@@ -164,6 +212,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/deliverables/{id}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["submit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/deliverables/{id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["review"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/courses": {
         parameters: {
             query?: never;
@@ -171,9 +251,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list_3"];
+        get: operations["list_5"];
         put?: never;
-        post: operations["create_4"];
+        post: operations["create_6"];
         delete?: never;
         options?: never;
         head?: never;
@@ -221,7 +301,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["publish"];
+        post: operations["publish_1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -331,9 +411,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list_4"];
+        get: operations["list_6"];
         put?: never;
-        post: operations["create_5"];
+        post: operations["create_7"];
         delete?: never;
         options?: never;
         head?: never;
@@ -349,7 +429,7 @@ export interface paths {
         };
         get: operations["thread"];
         put?: never;
-        post: operations["create_6"];
+        post: operations["create_8"];
         delete?: never;
         options?: never;
         head?: never;
@@ -363,9 +443,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list_5"];
+        get: operations["list_7"];
         put?: never;
-        post: operations["create_7"];
+        post: operations["create_9"];
         delete?: never;
         options?: never;
         head?: never;
@@ -548,6 +628,38 @@ export interface paths {
         patch: operations["objectiveDone"];
         trace?: never;
     };
+    "/api/v1/milestones/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["delete_1"];
+        options?: never;
+        head?: never;
+        patch: operations["update_3"];
+        trace?: never;
+    };
+    "/api/v1/deliverables/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["delete_2"];
+        options?: never;
+        head?: never;
+        patch: operations["update_4"];
+        trace?: never;
+    };
     "/api/v1/courses/{id}": {
         parameters: {
             query?: never;
@@ -561,7 +673,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch: operations["update_3"];
+        patch: operations["update_5"];
         trace?: never;
     };
     "/api/v1/course-units/{id}": {
@@ -606,7 +718,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        delete: operations["delete_1"];
+        delete: operations["delete_3"];
         options?: never;
         head?: never;
         patch: operations["edit"];
@@ -625,7 +737,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch: operations["update_4"];
+        patch: operations["update_6"];
         trace?: never;
     };
     "/api/v1/classrooms/{classroomId}/assignments/{assignmentId}": {
@@ -676,6 +788,38 @@ export interface paths {
         patch: operations["updateTemplate"];
         trace?: never;
     };
+    "/api/v1/showcase/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["view"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/showcase/{slug}/files/{fileId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["file"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects/{id}/progress": {
         parameters: {
             query?: never;
@@ -716,6 +860,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["download"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/deliverables/{id}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["reviews"];
         put?: never;
         post?: never;
         delete?: never;
@@ -862,7 +1022,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        delete: operations["delete_2"];
+        delete: operations["delete_4"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1053,6 +1213,8 @@ export interface components {
             description: string;
             /** Format: uuid */
             statusId: string;
+            /** Format: uuid */
+            milestoneId: string;
             priority: string;
             /** Format: date */
             dueOn: string;
@@ -1113,6 +1275,8 @@ export interface components {
             tasksTotal: number;
             /** Format: int64 */
             tasksDone: number;
+            /** Format: int32 */
+            finalScore: number;
         };
         CreateTaskRequest: {
             title: string;
@@ -1125,9 +1289,89 @@ export interface components {
             dueOn?: string;
             /** Format: int32 */
             estimatePoints?: number;
+            /** Format: uuid */
+            milestoneId?: string;
         };
         StatusRequest: {
             status: string;
+            /** Format: int32 */
+            finalScore?: number;
+            comment?: string;
+        };
+        PublishRequest: {
+            showTeam: boolean;
+        };
+        ShowcaseState: {
+            published: boolean;
+            slug: string;
+            showTeam: boolean;
+            /** Format: date-time */
+            publishedAt: string;
+        };
+        MilestoneRequest: {
+            title: string;
+            /** Format: date */
+            dueOn: string;
+            status: string;
+            /** Format: int32 */
+            position: number;
+            clearDueOn: boolean;
+        };
+        DeliverableResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            milestoneId: string;
+            /** Format: int32 */
+            position: number;
+            title: string;
+            description: string;
+            /** Format: date */
+            dueOn: string;
+            /** Format: int32 */
+            maxScore: number;
+            status: string;
+            /** Format: date-time */
+            submittedAt: string;
+            /** Format: uuid */
+            submittedBy: string;
+            submissionNote: string;
+            /** Format: date-time */
+            acceptedAt: string;
+            /** Format: uuid */
+            acceptedBy: string;
+            /** Format: int32 */
+            score: number;
+            /** Format: int64 */
+            fileCount: number;
+        };
+        MilestoneResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: int32 */
+            position: number;
+            title: string;
+            /** Format: date */
+            dueOn: string;
+            status: string;
+            overdue: boolean;
+            /** Format: int64 */
+            tasksTotal: number;
+            /** Format: int64 */
+            tasksDone: number;
+            deliverables: components["schemas"]["DeliverableResponse"][];
+        };
+        DeliverableRequest: {
+            title: string;
+            description: string;
+            /** Format: uuid */
+            milestoneId: string;
+            clearMilestone: boolean;
+            /** Format: date */
+            dueOn: string;
+            clearDueOn: boolean;
+            /** Format: int32 */
+            maxScore: number;
         };
         FileResponse: {
             /** Format: uuid */
@@ -1142,6 +1386,30 @@ export interface components {
             /** Format: int64 */
             size: number;
             deletable: boolean;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        SubmitRequest: {
+            note: string;
+        };
+        ReviewRequest: {
+            decision: string;
+            /** Format: int32 */
+            score?: number;
+            body?: string;
+        };
+        ReviewResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            deliverableId: string;
+            /** Format: uuid */
+            reviewerId: string;
+            kind: string;
+            decision: string;
+            /** Format: int32 */
+            score: number;
+            body: string;
             /** Format: date-time */
             createdAt: string;
         };
@@ -1213,8 +1481,20 @@ export interface components {
             summary: string;
             lessons: components["schemas"]["LessonView"][];
         };
-        PublishRequest: {
-            changelog: string;
+        DeliverableItem: {
+            title: string;
+            description?: string;
+            milestoneKey?: string;
+            /** Format: int32 */
+            dueDays?: number;
+            /** Format: int32 */
+            maxScore?: number;
+        };
+        MilestoneItem: {
+            key: string;
+            title: string;
+            /** Format: int32 */
+            dueDays?: number;
         };
         ProjectTemplateRequest: {
             title: string;
@@ -1227,6 +1507,8 @@ export interface components {
             maxTeamSize?: number;
             /** Format: int32 */
             durationDays?: number;
+            milestones?: components["schemas"]["MilestoneItem"][];
+            deliverables?: components["schemas"]["DeliverableItem"][];
         };
         ProjectTemplateView: {
             /** Format: uuid */
@@ -1243,6 +1525,23 @@ export interface components {
             maxTeamSize: number;
             /** Format: int32 */
             durationDays: number;
+            milestones: components["schemas"]["TemplateMilestone"][];
+            deliverables: components["schemas"]["TemplateDeliverable"][];
+        };
+        TemplateDeliverable: {
+            title: string;
+            description: string;
+            milestoneKey: string;
+            /** Format: int32 */
+            dueDays: number;
+            /** Format: int32 */
+            maxScore: number;
+        };
+        TemplateMilestone: {
+            key: string;
+            title: string;
+            /** Format: int32 */
+            dueDays: number;
         };
         TemplateRequest: {
             /** Format: uuid */
@@ -1506,6 +1805,9 @@ export interface components {
             /** Format: int32 */
             estimatePoints: number;
             clearEstimate: boolean;
+            /** Format: uuid */
+            milestoneId: string;
+            clearMilestone: boolean;
         };
         UpdateProjectRequest: {
             title: string;
@@ -1540,6 +1842,32 @@ export interface components {
             /** Format: uuid */
             termId: string;
         };
+        PublicDeliverable: {
+            title: string;
+            description: string;
+            files: components["schemas"]["PublicFile"][];
+        };
+        PublicFile: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: int64 */
+            size: number;
+        };
+        PublicShowcase: {
+            slug: string;
+            title: string;
+            summary: string;
+            /** Format: date */
+            startsOn: string;
+            /** Format: date */
+            dueOn: string;
+            /** Format: date-time */
+            completedAt: string;
+            objectives: string[];
+            deliverables: components["schemas"]["PublicDeliverable"][];
+            team: string[];
+        };
         ProgressResponse: {
             /** Format: int64 */
             tasksTotal: number;
@@ -1549,6 +1877,12 @@ export interface components {
             objectivesTotal: number;
             /** Format: int64 */
             objectivesDone: number;
+            /** Format: int64 */
+            deliverablesTotal: number;
+            /** Format: int64 */
+            deliverablesAccepted: number;
+            /** Format: int32 */
+            finalScore: number;
         };
         CardResponse: {
             key: string;
@@ -1946,6 +2280,7 @@ export interface operations {
                 assignee?: string;
                 priority?: string;
                 q?: string;
+                milestoneId?: string;
             };
             header?: never;
             path: {
@@ -2018,6 +2353,170 @@ export interface operations {
             };
         };
     };
+    state: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ShowcaseState"];
+                };
+            };
+        };
+    };
+    publish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublishRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ShowcaseState"];
+                };
+            };
+        };
+    };
+    unpublish: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    list_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["MilestoneResponse"][];
+                };
+            };
+        };
+    };
+    create_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MilestoneRequest"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["MilestoneResponse"];
+                };
+            };
+        };
+    };
+    list_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DeliverableResponse"][];
+                };
+            };
+        };
+    };
+    create_5: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliverableRequest"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DeliverableResponse"];
+                };
+            };
+        };
+    };
     complete: {
         parameters: {
             query?: never;
@@ -2040,7 +2539,59 @@ export interface operations {
             };
         };
     };
-    list_3: {
+    submit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubmitRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DeliverableResponse"];
+                };
+            };
+        };
+    };
+    review: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ReviewResponse"];
+                };
+            };
+        };
+    };
+    list_5: {
         parameters: {
             query?: {
                 nodeId?: string;
@@ -2063,7 +2614,7 @@ export interface operations {
             };
         };
     };
-    create_4: {
+    create_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -2135,7 +2686,7 @@ export interface operations {
             };
         };
     };
-    publish: {
+    publish_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -2342,7 +2893,7 @@ export interface operations {
             };
         };
     };
-    list_4: {
+    list_6: {
         parameters: {
             query?: {
                 targetType?: string;
@@ -2368,7 +2919,7 @@ export interface operations {
             };
         };
     };
-    create_5: {
+    create_7: {
         parameters: {
             query?: never;
             header?: never;
@@ -2421,7 +2972,7 @@ export interface operations {
             };
         };
     };
-    create_6: {
+    create_8: {
         parameters: {
             query?: never;
             header?: never;
@@ -2448,7 +2999,7 @@ export interface operations {
             };
         };
     };
-    list_5: {
+    list_7: {
         parameters: {
             query?: {
                 mine?: boolean;
@@ -2472,7 +3023,7 @@ export interface operations {
             };
         };
     };
-    create_7: {
+    create_9: {
         parameters: {
             query?: never;
             header?: never;
@@ -2934,6 +3485,98 @@ export interface operations {
             };
         };
     };
+    delete_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    update_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MilestoneRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["MilestoneResponse"];
+                };
+            };
+        };
+    };
+    delete_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    update_4: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliverableRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DeliverableResponse"];
+                };
+            };
+        };
+    };
     get_2: {
         parameters: {
             query?: never;
@@ -2956,7 +3599,7 @@ export interface operations {
             };
         };
     };
-    update_3: {
+    update_5: {
         parameters: {
             query?: never;
             header?: never;
@@ -3074,7 +3717,7 @@ export interface operations {
             };
         };
     };
-    delete_1: {
+    delete_3: {
         parameters: {
             query?: never;
             header?: never;
@@ -3142,7 +3785,7 @@ export interface operations {
             };
         };
     };
-    update_4: {
+    update_6: {
         parameters: {
             query?: never;
             header?: never;
@@ -3308,6 +3951,53 @@ export interface operations {
             };
         };
     };
+    view: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PublicShowcase"];
+                };
+            };
+        };
+    };
+    file: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": {
+                        [key: string]: string;
+                    };
+                };
+            };
+        };
+    };
     progress: {
         parameters: {
             query?: never;
@@ -3370,6 +4060,28 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["DownloadResponse"];
+                };
+            };
+        };
+    };
+    reviews: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ReviewResponse"][];
                 };
             };
         };
@@ -3559,7 +4271,7 @@ export interface operations {
             };
         };
     };
-    delete_2: {
+    delete_4: {
         parameters: {
             query?: never;
             header?: never;

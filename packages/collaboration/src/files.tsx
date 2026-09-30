@@ -24,13 +24,15 @@ function put(url: string, headers: Record<string, string>, file: File, onProgres
 }
 
 /** Files of one target (or the whole context when target is omitted); upload, download, delete. */
-export function Files({ ctx, target, people, labelOf }: {
+export function Files({ ctx, target, people, labelOf, readOnly = false }: {
   ctx: CollabContext; target?: Target; people: Person[]; labelOf?: (f: FileView) => string | null;
+  /** Hides upload and delete (e.g. a submitted deliverable); the API enforces the same rule. */
+  readOnly?: boolean;
 }) {
   const [files, setFiles] = useState<FileView[] | null>(null);
   const [progress, setProgress] = useState<number | null>(null);
   const input = useRef<HTMLInputElement>(null);
-  const canUpload = useCan(`${ctx.type}.file.upload`);
+  const canUpload = useCan(`${ctx.type}.file.upload`) && !readOnly;
   const names = new Map(people.map((p) => [p.id, p.name]));
   const [version, setVersion] = useState(0);
   const reload = useCallback(() => setVersion((v) => v + 1), []);
@@ -93,7 +95,7 @@ export function Files({ ctx, target, people, labelOf }: {
                   </span>
                 </span>
                 <Button size="icon" variant="ghost" aria-label={`Download ${f.name}`} onClick={() => void open(f)}><Download /></Button>
-                {f.deletable && (
+                {f.deletable && !readOnly && (
                   <Button size="icon" variant="ghost" className="text-destructive" aria-label={`Delete ${f.name}`}
                           onClick={async () => { const r = await deleteFile(ctx, f.id); if (!r.ok) toast.error(r.message); reload(); }}>
                     <Trash2 />

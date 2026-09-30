@@ -6,8 +6,9 @@ import type { Person } from "../lib/types";
 import { TaskDialog } from "./task-dialog";
 
 /** Opens the dialog for ?task=<number>; closing removes the parameter. */
-export function TaskDialogHost({ projectId, tasks, statuses, members, people, editable }: {
-  projectId: string; tasks: ProjectTask[]; statuses: WorkflowStatus[]; members: Person[]; people: Person[]; editable: boolean;
+export function TaskDialogHost({ projectId, tasks, statuses, members, people, milestones = [], editable }: {
+  projectId: string; tasks: ProjectTask[]; statuses: WorkflowStatus[]; members: Person[]; people: Person[];
+  milestones?: { id: string; title: string }[]; editable: boolean;
 }) {
   const params = useSearchParams();
   const router = useRouter();
@@ -20,5 +21,5 @@ export function TaskDialogHost({ projectId, tasks, statuses, members, people, ed
     router.replace(next.size ? `${pathname}?${next}` : pathname, { scroll: false });
   };
   return <TaskDialog key={task.id + task.checklist.length} projectId={projectId} task={task} statuses={statuses}
-                     members={members} people={people} editable={editable} onClose={close} />;
+                     members={members} people={people} milestones={milestones} editable={editable} onClose={close} />;
 }

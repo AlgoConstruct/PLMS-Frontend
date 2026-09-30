@@ -46,7 +46,7 @@ export async function TaskListPage({ id, searchParams, mine }: { id: string; sea
   return (
     <>
       <PageHeader title={mine ? "My tasks" : "List"} description={`${data.project.key} · ${rows.length} tasks`} />
-      <TaskFilters members={data.members} showAssignee={!mine} />
+      <TaskFilters members={data.members} milestones={data.milestones} showAssignee={!mine} />
       <Card>
         <CardContent className="p-0">
           {rows.length === 0 ? <div className="p-4"><EmptyState>No tasks match.</EmptyState></div> : (
@@ -70,7 +70,7 @@ export async function TaskListPage({ id, searchParams, mine }: { id: string; sea
           )}
         </CardContent>
       </Card>
-      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} people={data.people}
+      <TaskDialogHost projectId={id} tasks={data.tasks} statuses={data.statuses} members={data.members} people={data.people} milestones={data.milestones}
                       editable={isWritable(data.project.status)} />
     </>
   );

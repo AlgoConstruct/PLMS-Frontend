@@ -3,7 +3,8 @@
 import type { ActionState } from "@pathwayiq/ui/lib/action-state";
 import { failure } from "@pathwayiq/ui/lib/action-state";
 import { field } from "@pathwayiq/api/mutate";
-import { platformMutate } from "@pathwayiq/api/platform";
+import { platformApi, platformMutate } from "@pathwayiq/api/platform";
+import type { Review } from "@pathwayiq/api/platform-types";
 
 const page = (id: string | null) => [`/app/c/project/${id}`];
 const num = (form: FormData, name: string) => {
@@ -59,6 +60,7 @@ export async function createTask(_: ActionState | undefined, form: FormData): Pr
   const id = field(form, "projectId");
   return platformMutate(`/api/v1/projects/${id}/tasks`, "POST", {
     title: field(form, "title"), statusId: optional(form, "statusId"), priority: field(form, "priority") ?? "MEDIUM",
+    milestoneId: optional(form, "milestoneId"),
   }, () => "Task added", page(id));
 }
 
@@ -74,6 +76,7 @@ export async function updateTask(_: ActionState | undefined, form: FormData): Pr
     ...(form.has("assigneesShown") ? { assigneeIds: assignees } : {}),
     dueOn, clearDueOn: dueOn === null,
     estimatePoints: estimate, clearEstimate: estimate === null,
+    ...(form.has("milestoneId") ? { milestoneId: optional(form, "milestoneId"), clearMilestone: field(form, "milestoneId") === "none" } : {}),
   }, () => "Task saved", page(field(form, "projectId")));
 }
 
@@ -118,4 +121,71 @@ export async function startProjects(_: ActionState | undefined, form: FormData):
     teams: teams.filter((t) => t.length > 0).map((memberIds) => ({ memberIds })),
   }, (created) => `${created.length} project${created.length === 1 ? "" : "s"} started`,
   [`/app/c/classroom/${classroomId}/projects`]);
+}
+
+export async function createMilestone(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const id = field(form, "projectId");
+  return platformMutate(`/api/v1/projects/${id}/milestones`, "POST", { title: field(form, "title"), dueOn: field(form, "dueOn") },
+    () => "Milestone added", page(id));
+}
+
+export async function updateMilestone(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  return platformMutate(`/api/v1/milestones/${field(form, "milestoneId")}`, "PATCH", {
+    title: field(form, "title"), dueOn: field(form, "dueOn"), status: field(form, "status"),
+  }, () => "Milestone saved", page(field(form, "projectId")));
+}
+
+export async function deleteMilestone(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  return platformMutate(`/api/v1/milestones/${field(form, "milestoneId")}`, "DELETE", undefined, () => "Milestone removed",
+    page(field(form, "projectId")));
+}
+
+export async function createDeliverable(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const id = field(form, "projectId");
+  return platformMutate(`/api/v1/projects/${id}/deliverables`, "POST", {
+    title: field(form, "title"), description: field(form, "description"), milestoneId: optional(form, "milestoneId"),
+    dueOn: field(form, "dueOn"), maxScore: num(form, "maxScore"),
+  }, () => "Deliverable added", page(id));
+}
+
+export async function deleteDeliverable(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  return platformMutate(`/api/v1/deliverables/${field(form, "deliverableId")}`, "DELETE", undefined,
+    () => "Deliverable removed", page(field(form, "projectId")));
+}
+
+export async function submitDeliverable(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  return platformMutate(`/api/v1/deliverables/${field(form, "deliverableId")}/submit`, "POST", { note: field(form, "note") },
+    () => "Submitted for review", page(field(form, "projectId")));
+}
+
+export async function reviewDeliverable(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const decision = field(form, "decision") ?? "NONE";
+  return platformMutate(`/api/v1/deliverables/${field(form, "deliverableId")}/review`, "POST", {
+    decision, score: decision === "ACCEPT" ? num(form, "score") : null, body: field(form, "body") ?? "",
+  }, () => (decision === "ACCEPT" ? "Deliverable accepted" : decision === "CHANGES" ? "Changes requested" : "Feedback sent"),
+  page(field(form, "projectId")));
+}
+
+export async function completeProject(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const id = field(form, "projectId");
+  return platformMutate(`/api/v1/projects/${id}/status`, "POST", {
+    status: "COMPLETED", finalScore: num(form, "finalScore"), comment: field(form, "comment"),
+  }, () => "Project completed", [...page(id), "/app/projects"]);
+}
+
+export async function publishShowcase(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const id = field(form, "projectId");
+  return platformMutate(`/api/v1/projects/${id}/showcase`, "POST", { showTeam: field(form, "showTeam") === "on" },
+    () => "Published to the showcase", page(id));
+}
+
+export async function unpublishShowcase(_: ActionState | undefined, form: FormData): Promise<ActionState> {
+  const id = field(form, "projectId");
+  return platformMutate(`/api/v1/projects/${id}/showcase`, "DELETE", undefined, () => "Removed from the showcase", page(id));
+}
+
+/** Review history of a deliverable, for client components (newest first). */
+export async function listReviews(deliverableId: string): Promise<Review[]> {
+  const result = await platformApi<Review[]>(`/api/v1/deliverables/${deliverableId}/reviews`);
+  return result.ok ? result.data : [];
 }

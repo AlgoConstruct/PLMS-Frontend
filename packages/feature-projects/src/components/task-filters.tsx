@@ -8,7 +8,9 @@ import type { Person } from "../lib/types";
 import { PRIORITIES, priorityLabel } from "../lib/status";
 
 /** Filters live in the URL so a filtered board can be shared and survives reloads. */
-export function TaskFilters({ members, showAssignee = true }: { members: Person[]; showAssignee?: boolean }) {
+export function TaskFilters({ members, milestones = [], showAssignee = true }: {
+  members: Person[]; milestones?: { id: string; title: string }[]; showAssignee?: boolean;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -38,6 +40,15 @@ export function TaskFilters({ members, showAssignee = true }: { members: Person[
           {PRIORITIES.map((p) => <SelectItem key={p} value={p}>{priorityLabel(p)}</SelectItem>)}
         </SelectContent>
       </Select>
+      {milestones.length > 0 && (
+        <Select value={params.get("milestoneId") ?? "all"} onValueChange={(v) => set("milestoneId", v === "all" ? null : v)}>
+          <SelectTrigger className="w-44" aria-label="Milestone"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Any milestone</SelectItem>
+            {milestones.map((m) => <SelectItem key={m.id} value={m.id}>{m.title}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      )}
       <form onSubmit={(e) => { e.preventDefault(); set("q", q.trim() || null); }}>
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search tasks" aria-label="Search tasks" className="w-56" />
       </form>
