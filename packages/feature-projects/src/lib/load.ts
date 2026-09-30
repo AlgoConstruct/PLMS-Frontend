@@ -4,8 +4,16 @@ import { getVisibleUsers } from "@pathwayiq/api/data";
 import { platformApi } from "@pathwayiq/api/platform";
 import type { Member, Project, ProjectTask, WorkflowStatus } from "@pathwayiq/api/platform-types";
 
-export type Person = { id: string; name: string };
-export interface TaskFilters { assignee?: string; priority?: string; q?: string }
+import type { Person, TaskFilters } from "./types";
+
+export type { Person, TaskFilters } from "./types";
+
+type Search = Record<string, string | string[] | undefined>;
+const str = (v: string | string[] | undefined) => (typeof v === "string" && v !== "" ? v : undefined);
+
+export function filtersFrom(sp: Search): TaskFilters {
+  return { assignee: str(sp.assignee), priority: str(sp.priority), q: str(sp.q) };
+}
 
 export async function loadProject(id: string) {
   const result = await platformApi<Project>(`/api/v1/projects/${id}`);
