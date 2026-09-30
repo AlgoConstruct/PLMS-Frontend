@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Copy, Plus, Send, Trash2 } from "lucide-react";
 import { ConfirmAction } from "@pathwayiq/ui/blocks/confirm-action";
 import { CourseOutline } from "../../../components/course-outline";
+import { TemplatePlanFields } from "../../../components/template-plan-fields";
 import { FormDialog } from "@pathwayiq/ui/blocks/form-dialog";
 import { EmptyState, Forbidden, FormField, PageHeader } from "@pathwayiq/ui/blocks/page";
 import { SelectField } from "@pathwayiq/ui/blocks/select-field";
@@ -182,6 +183,7 @@ export default async function CoursePage({ params, searchParams }: PageProps<"/a
                   <FormField label="Min team size" htmlFor="pt-min" hint="Teams only"><Input id="pt-min" name="minTeamSize" type="number" min={1} /></FormField>
                   <FormField label="Max team size" htmlFor="pt-max" hint="Teams only"><Input id="pt-max" name="maxTeamSize" type="number" min={1} /></FormField>
                 </div>
+                <TemplatePlanFields />
               </FormDialog>
             )}
           </div>
@@ -195,6 +197,8 @@ export default async function CoursePage({ params, searchParams }: PageProps<"/a
                   {t.teamMode === "TEAM" ? `teams of ${t.minTeamSize ?? 1}–${t.maxTeamSize ?? "any"}` : "each student"}
                   {t.durationDays != null ? ` · ${t.durationDays} days` : ""}
                   {t.objectives.length > 0 ? ` · ${t.objectives.length} objectives` : ""}
+                  {t.milestones.length > 0 ? ` · ${t.milestones.length} milestones` : ""}
+                  {t.deliverables.length > 0 ? ` · ${t.deliverables.length} deliverables` : ""}
                 </span>
               </span>
               {canEdit && (

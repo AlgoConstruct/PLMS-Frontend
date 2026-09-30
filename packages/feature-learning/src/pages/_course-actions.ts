@@ -89,6 +89,8 @@ export async function addProjectTemplate(_: ActionState | undefined, form: FormD
     minTeamSize: team ? num(form, "minTeamSize") : null,
     maxTeamSize: team ? num(form, "maxTeamSize") : null,
     durationDays: num(form, "durationDays"),
+    milestones: JSON.parse(field(form, "milestones") ?? "[]"),
+    deliverables: JSON.parse(field(form, "deliverables") ?? "[]"),
   }, () => "Project template added", coursePage(form));
 }
 
