@@ -63,7 +63,9 @@ export function Files({ ctx, target, people, labelOf }: {
 
   const open = async (f: FileView) => {
     const r = await downloadUrl(ctx, f.id);
-    if (r.ok) window.open(r.data.url, "_blank", "noopener"); else toast.error(r.message);
+    // The signed URL answers with Content-Disposition: attachment, so the browser downloads and stays on this page.
+    // (window.open after an await is often blocked as a popup.)
+    if (r.ok) window.location.assign(r.data.url); else toast.error(r.message);
   };
 
   return (
