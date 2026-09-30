@@ -11,7 +11,8 @@
     "api:generate": "pnpm --filter @pathwayiq/api generate",
     "e2e": "pnpm --filter @pathwayiq/app e2e",
     "e2e:platform": "pnpm --filter @pathwayiq/app e2e:platform",
-    "e2e:shell": "pnpm --filter @pathwayiq/app e2e:shell"
+    "e2e:shell": "pnpm --filter @pathwayiq/app e2e:shell",
+    "e2e:projects": "pnpm --filter @pathwayiq/app e2e:projects"
   },
   "devDependencies": {
     "eslint": "^9",

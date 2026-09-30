@@ -24,7 +24,7 @@ function Column({ status, tasks, members, draggable, projectId, canCreate }: {
   const { setNodeRef, isOver } = useDroppable({ id: COLUMN_PREFIX + status.id });
   return (
     <section ref={setNodeRef} data-column={status.name}
-             className={`flex w-72 shrink-0 flex-col gap-2 rounded-lg border bg-muted/40 p-2 ${isOver ? "ring-2 ring-primary" : ""}`}>
+             className={`flex min-w-52 flex-1 basis-0 flex-col gap-2 rounded-lg border bg-muted/40 p-2 ${isOver ? "ring-2 ring-primary" : ""}`}>
       <header className="flex items-center justify-between px-1">
         <h3 className="text-sm font-medium">{status.name} <span className="text-muted-foreground">{tasks.length}</span></h3>
         {canCreate && (

@@ -9,7 +9,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "e2e": "node e2e/console.e2e.mjs",
     "e2e:platform": "node e2e/platform.e2e.mjs",
-    "e2e:shell": "node e2e/shell.e2e.mjs"
+    "e2e:shell": "node e2e/shell.e2e.mjs",
+    "e2e:projects": "node e2e/projects.e2e.mjs"
   },
   "dependencies": {
     "@pathwayiq/access": "workspace:*",
