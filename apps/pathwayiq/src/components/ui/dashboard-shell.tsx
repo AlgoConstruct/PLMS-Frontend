@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@pathwayiq/ui/components/command";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@pathwayiq/ui/components/dropdown-menu";
 import { activeNavigationItem, NavigationIcon, SidebarNav } from "./dashboard-sidebar";
+import { ThemeToggle } from "./theme-toggle";
 import styles from "./dashboard.module.css";
 
 export function DashboardShell({ groups, displayName, username, children }: {
@@ -84,6 +85,7 @@ export function DashboardShell({ groups, displayName, username, children }: {
           <span className={styles.breadcrumbRoot}>Workspace</span><ChevronRight className={styles.breadcrumbSeparator} size={13} aria-hidden="true" /><span className={styles.breadcrumbCurrent}>{sectionTitle}</span>
         </div>
         <div className={styles.topbarActions}>
+          <ThemeToggle />
           <button ref={searchButton} type="button" onClick={openSearch} className={styles.topSearch} aria-label="Search navigation"><Search size={15} aria-hidden="true" /><span>Jump to a page…</span><kbd>⌘ K</kbd></button>
           <span className={styles.topAvatar} title={displayName} aria-label={`Signed in as ${displayName}`}>{initials}</span>
         </div>

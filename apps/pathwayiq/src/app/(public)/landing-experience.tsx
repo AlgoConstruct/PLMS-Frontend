@@ -11,6 +11,7 @@ import {
 import { DropdownNavigation, type NavigationItem } from "@/components/ui/dropdown-navigation";
 import FeaturesBlock from "@/components/ui/features-2";
 import HeroSection from "@/components/ui/hero-section-9";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import StudentPossibilities from "@/components/ui/student-possibilities";
 import styles from "./landing.module.css";
 
@@ -102,6 +103,7 @@ export function LandingExperience({ signedIn }: { signedIn: boolean }) {
           <Brand />
           <DropdownNavigation navItems={navigation} />
           <div className={styles.headerActions}>
+            <ThemeToggle />
             <Link href={entryHref} className={styles.signIn}>{signedIn ? "Open app" : "Sign in"}<ArrowUpRight size={16} aria-hidden="true" /></Link>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, Lightbulb, Network, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { cn } from "@pathwayiq/ui/lib/utils";
+import { ThemeToggle } from "./theme-toggle";
 import styles from "./auth-switch.module.css";
 
 export interface AuthSwitchProps {
@@ -33,7 +34,7 @@ export default function AuthSwitch({ signIn, signUp, demoAccounts, initialMode =
         <span className={styles.brandMark}><Network size={23} strokeWidth={2.2} aria-hidden="true" /></span>
         <span>pathway<span className={styles.brandIq}>iq</span><span className={styles.brandDot}>.</span></span>
       </Link>
-      <Link href="/" className={styles.back}><ArrowLeft size={14} aria-hidden="true" /> Back to home</Link>
+      <div className={styles.headerActions}><ThemeToggle /><Link href="/" className={styles.back} aria-label="Back to home"><ArrowLeft size={14} aria-hidden="true" /><span>Back to home</span></Link></div>
     </header>
 
     <div className={styles.stage}>

@@ -1,0 +1,7 @@
+.toggle { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; padding: 8px; border: 1px solid var(--pq-border); border-radius: 9px; color: var(--pq-text); background: var(--pq-surface); cursor: pointer; }
+.toggle:hover { color: var(--pq-ink); background: var(--pq-accent-soft); }
+.toggle:focus-visible { outline: 2px solid var(--pq-border-strong); outline-offset: 3px; }
+.sun { display: none; }
+:global(.dark) .sun { display: block; }
+:global(.dark) .moon { display: none; }
+@media (max-width: 420px) { .toggle { width: 36px; height: 36px; } }
