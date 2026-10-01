@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 import { CapabilityProvider } from "@pathwayiq/access/capabilities";
-import { DynamicNav } from "@pathwayiq/access/dynamic-nav";
+import { SidebarNav } from "@/components/ui/dashboard-sidebar";
+import styles from "@/components/ui/dashboard.module.css";
 import { loadNavigation } from "@pathwayiq/access/navigation";
 import { Forbidden } from "@pathwayiq/ui/blocks/page";
-import { Card, CardContent } from "@pathwayiq/ui/components/card";
-import { SidebarProvider } from "@pathwayiq/ui/components/sidebar";
 import { backendsFor } from "@/backends";
 import { registry } from "@/registry";
 
@@ -18,15 +17,11 @@ export default async function ContextLayout({ children, params }: LayoutProps<"/
   if (groups.length === 0) return <Forbidden what={`this ${type}`} />;
   return (
     <CapabilityProvider capabilities={nav.capabilities}>
-      <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
-        <Card className="h-fit">
-          <CardContent className="p-2">
-            <SidebarProvider className="min-h-0">
-              <div className="w-full"><DynamicNav groups={groups} /></div>
-            </SidebarProvider>
-          </CardContent>
-        </Card>
-        <div className="min-w-0">{children}</div>
+      <div className={styles.contextLayout}>
+        <aside className={styles.contextNav} aria-label="Learning space navigation">
+          <SidebarNav groups={groups} label="Context navigation" />
+        </aside>
+        <div className={styles.contextContent}>{children}</div>
       </div>
     </CapabilityProvider>
   );

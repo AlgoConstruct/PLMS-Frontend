@@ -1,0 +1,36 @@
+.home { display: flex; flex-direction: column; gap: 29px; }
+.heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+.heading p { margin: 0 0 9px; color: #81936e; font-size: 8px; font-weight: 600; letter-spacing: 1.5px; }
+.heading h1 { margin: 0; color: #273c2d; font-size: 27px; line-height: 1.25; font-weight: 550; letter-spacing: -1px; overflow-wrap: anywhere; }
+.heading div > span { display: block; margin-top: 10px; font-size: 12px; color: #8a987c; line-height: 1.7; }
+.overviewBadge { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; padding: 7px 10px; border: 1px solid #dfe7d4; border-radius: 20px; font-size: 10px; color: #7c9262; background: #fafcf5; }
+.welcome { position: relative; overflow: hidden; display: flex; justify-content: space-between; gap: 30px; min-height: 235px; padding: 31px 35px; border: 1px solid #dce7c9; border-radius: 15px; background: linear-gradient(105deg, #edf3e1 0%, #e8f0d9 58%, #e0eccb 100%); }
+.welcomeCopy { position: relative; z-index: 1; }
+.eyebrow { display: flex; align-items: center; gap: 7px; font-size: 8px; letter-spacing: 1.3px; font-weight: 550; color: #7c9661; }
+.welcome h2 { margin: 17px 0 13px; color: #4b653a; font-size: 29px; font-weight: 530; line-height: 1.2; letter-spacing: -.9px; }
+.welcome p { margin: 0; max-width: 360px; color: #81956b; font-size: 11px; line-height: 1.85; }
+.welcomeArt { position: relative; width: 220px; flex-shrink: 0; display: grid; place-items: center; }
+.orbit { position: absolute; top: -10px; width: 215px; height: 215px; border-radius: 50%; border: 1px solid #c9d9b0; }
+.orbit::after { content: ""; position: absolute; inset: 25px; border: 1px dashed #c6d6ac; border-radius: 50%; }
+.compass { display: grid; place-items: center; width: 116px; height: 116px; border: 1px solid #d4e3bb; border-radius: 27px; background: #f5f9ecdd; color: #91ad6b; box-shadow: 0 15px 30px -15px #78955555; transform: rotate(-12deg); }
+.artLabel { position: absolute; bottom: -8px; right: 0; padding: 9px 14px; border: 1px solid #dae5c8; border-radius: 7px; background: #fbfcf7; color: #819769; font-size: 9px; box-shadow: 0 5px 12px #718c4920; transform: rotate(4deg); }
+.spark { position: absolute; top: 9px; right: 4px; color: #94ac74; }
+.sectionHeading { display: flex; justify-content: space-between; align-items: baseline; gap: 15px; margin-bottom: 15px; }
+.sectionHeading h2 { margin: 0; font-size: 15px; font-weight: 550; color: #536748; letter-spacing: -.25px; }
+.sectionHeading > span { color: #98a28d; font-size: 10px; }
+.shortcuts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.shortcut { display: flex; align-items: center; gap: 12px; min-height: 75px; padding: 16px; background: #fffefa; border: 1px solid #e1e8d8; border-radius: 11px; color: #60794c; font-size: 12px; text-decoration: none; transition: background 160ms, border-color 160ms; }
+.shortcut:hover { background: #f0f5e7; border-color: #cbdcb5; }
+.shortcutIcon { display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; background: #f1f5e9; color: #93a97b; border: 1px solid #e6eddb; border-radius: 9px; }
+.shortcut > span:nth-child(2) { min-width: 0; overflow-wrap: anywhere; }
+.shortcut > svg { margin-left: auto; flex-shrink: 0; color: #9baa8c; }
+.cards [data-card-key] { min-width: 0; }
+.cards [data-slot="card"] { border: 1px solid #e1e8d8; border-radius: 13px; background: #fffefa; box-shadow: 0 3px 12px #64764703; }
+.cards [data-slot="card-title"] { color: #60744f; font-size: 14px; font-weight: 550; }
+.cards [data-slot="card-content"] { font-size: 12px; line-height: 1.75; }
+.cards [data-slot="card-content"] a { border-radius: 7px; }
+@media (max-width: 1200px) { .shortcuts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .welcomeArt { width: 170px; } }
+@media (max-width: 900px) { .welcomeArt { display: none; } .welcome { min-height: 220px; padding: 27px; } .overviewBadge { display: none; } .sectionHeading > span { display: none; } }
+@media (max-width: 767px) { .home { gap: 25px; } .heading h1 { font-size: 25px; } .heading div > span { font-size: 11px; } .welcome { min-height: auto; padding: 24px; } .welcome h2 { font-size: 25px; } .welcome p { font-size: 10px; } .shortcut { gap: 8px; padding: 12px; font-size: 11px; } .shortcuts { gap: 9px; } .shortcutIcon { width: 29px; height: 29px; } }
+@media (max-width: 360px) { .shortcuts { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .shortcut { transition: none; } }
